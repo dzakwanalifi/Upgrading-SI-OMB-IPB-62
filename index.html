@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Mikir Kritis di Balik Layar SI OMB</title> <!-- Ganti judul jika perlu -->
+
+        <link rel="stylesheet" href="dist/reset.css">
+        <link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/theme/white.css" id="theme"> <!-- Ganti 'white.css' dengan tema pilihanmu -->
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="plugin/highlight/monokai.css"> <!-- Ganti 'monokai.css' jika ingin tema highlight lain -->
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+
+                <!-- Slide 1: Judul & Intro -->
+                <section data-transition="zoom">
+                    <!-- 1.0 Judul Utama -->
+                    <section>
+                        <h1 class="r-fit-text">Mikir Kritis di Balik Layar SI OMB</h1>
+                        <h2 class="r-fit-text" style="margin-top: -20px;">Dari Reaktif Jadi Reflektif</h2>
+                        <p style="margin-top: 50px;">
+                            Plus Lincah Mikirnya & Liat Gambaran Besar!
+                        </p>
+                        <p style="margin-top: 80px; font-size: 0.8em;">
+                            Oleh: <strong>Muhammad Dzakwan Alifi</strong> <br>
+                            <!-- Mengganti afiliasi agar lebih singkat -->
+                            (Statistika & Sains Data IPB)
+                        </p>
+                        <aside class="notes">
+                            Selamat siang teman-teman semua! Terima kasih banyak buat kesempatannya sharing di sini, terutama buat Ghiffari yang udah ngundang. Seneng banget bisa ketemu sama tim 'dapur'-nya OMB IPB 62 nih.
+                            Perkenalkan, saya Dzakwan... (lanjutkan perkenalan singkat sesuai skrip).
+                            Hari ini kita mau ngobrol santai tapi penting soal critical thinking.
+                        </aside>
+                    </section>
+
+                    <!-- 1.1 Kenalan & Konteks (REVISI IKON & ALIGNMENT) -->
+                    <section>
+                        <h2>Kenalan Dulu & Konteks Kita</h2>
+                        <div style="display: flex; justify-content: space-around; align-items: flex-start; margin-top: 40px; text-align: center;">
+                            <!-- Hapus data-fragment-index jika urutan DOM sudah benar -->
+                            <div class="fragment fade-up" style="width: 20%;">
+                                <img src="https://img.icons8.com/fluency/80/000000/graduation-cap.png" alt="Edu" style="height: 80px;"/>
+                                <p style="font-size: 0.7em; margin-top: 5px;">Statistika & Sains Data IPB</p>
+                            </div>
+                            <div class="fragment fade-up" style="width: 20%;"> <!-- index 1 (otomatis) -->
+                                <img src="https://img.icons8.com/fluency/80/000000/mind-map.png" alt="Data" style="height: 80px;"/>
+                                <p style="font-size: 0.7em; margin-top: 5px;">Pengalaman Data (Lomba, Project, Outsco)</p>
+                            </div>
+                            <div class="fragment fade-up" style="width: 20%;"> <!-- index 2 (otomatis) -->
+                                <img src="https://img.icons8.com/fluency/80/000000/artificial-intelligence.png" alt="AI" style="height: 80px;"/>
+                                <p style="font-size: 0.7em; margin-top: 5px;">Eksplor AI & Workflow Automation</p>
+                            </div>
+                            <div class="fragment fade-up" style="width: 20%;"> <!-- index 3 (otomatis) -->
+                                <img src="https://img.icons8.com/fluency/80/000000/chat--v1.png" alt="Talk" style="height: 80px;"/>
+                                <p style="font-size: 0.7em; margin-top: 5px;">Sharing Perspektif (Yuk Diskusi!)</p>
+                            </div>
+                        </div>
+
+                        <!-- Visualisasi Sosio-Teknis tetap pakai index agar muncul terakhir -->
+                        <div class="fragment" data-fragment-index="4" style="margin-top: 50px; text-align: center;">
+                            <p style="font-weight: bold;">Konteks Kerja Kita: Sistem Sosio-Teknis!</p>
+                            <!-- REVISI Layout Sosio-Teknis dengan lingkaran dan jarak horizontal lebih besar -->
+                            <div style="position: relative; height: 120px; margin-top: 10px; display: inline-block; width: 400px;"> <!-- Width & height ditambah -->
+                              <div style="position: absolute; left: 0; top: 0; border: 2px solid #3498db; padding: 10px; border-radius: 50%; width: 90px; height: 90px; display: flex; flex-direction: column; justify-content: center; align-items: center;">💻<br>Tekno</div> <!-- Width & height lingkaran ditambah -->
+                              <div style="position: absolute; left: 150px; top: 0; border: 2px solid #2ecc71; padding: 10px; border-radius: 50%; width: 90px; height: 90px; display: flex; flex-direction: column; justify-content: center; align-items: center;">⚙️<br>Proses</div> <!-- Jarak horizontal & ukuran lingkaran ditambah -->
+                              <div style="position: absolute; left: 300px; top: 0; border: 2px solid #e74c3c; padding: 10px; border-radius: 50%; width: 90px; height: 90px; display: flex; flex-direction: column; justify-content: center; align-items: center;">👥<br>Orang</div> <!-- Jarak horizontal & ukuran lingkaran ditambah -->
+                           </div>
+                           <p style="font-size: 0.7em; margin-top: 15px;"><em>Teknologi, Proses, dan Orang saling terkait!</em></p>
+                       </div>
+                       <aside class="notes">
+                           Jadi, background saya di Statistik IPB [point 1]. Saya udah cukup banyak main sama data [point 2]. Sekarang lagi suka AI & otomatisasi [point 3]. Dan ini sharing perspektif ya, feel free diskusi [point 4].
+                            Nah, penting nih [tunjuk visualisasi Sosio-Teknis]. Kerja kita di SI itu nggak cuma soal teknologi (coding, server), tapi juga soal proses kerja tim/OMB, dan gimana orang (panitia, maba) berinteraksi sama itu semua. Semuanya nyambung! Ini konsep Sistem Sosio-Teknis.
+                        </aside>
+                    </section>
+
+                    <!-- 1.2 Roadmap/Agenda (REVISI TOTAL LAYOUT) -->
+                    <section>
+                        <h2>Agenda Ngobrol Kita</h2>
+                        <!-- Layout Flexbox Sederhana untuk Agenda -->
+                        <div style="display: flex; justify-content: space-around; text-align: center; margin-top: 50px; flex-wrap: wrap; gap: 20px;">
+                             <div class="fragment" style="width: 18%;"> <!-- index 0 -->
+                                <img src="https://img.icons8.com/fluency/64/000000/question-mark.png" alt="Why" style="height: 64px;"/>
+                                <p style="font-size: 0.7em;">1. Kenapa CT?</p>
+                            </div>
+                            <div class="fragment" style="width: 18%;"> <!-- index 1 -->
+                                <img src="https://img.icons8.com/fluency/64/000000/ingredients.png" alt="Recipe" style="height: 64px;"/>
+                                <p style="font-size: 0.7em;">2. Resep CT</p>
+                            </div>
+                            <div class="fragment" style="width: 18%;"> <!-- index 2 -->
+                                <img src="https://img.icons8.com/fluency/64/000000/robot.png" alt="AI" style="height: 64px;"/>
+                                <p style="font-size: 0.7em;">3. CT & AI</p>
+                            </div>
+                             <div class="fragment" style="width: 18%;"> <!-- index 3 -->
+                                <img src="https://img.icons8.com/fluency/64/000000/error.png" alt="Trap" style="height: 64px;"/>
+                                <p style="font-size: 0.7em;">4. Jebakan Bias</p>
+                            </div>
+                             <div class="fragment" style="width: 18%;"> <!-- index 4 -->
+                                <img src="https://img.icons8.com/fluency/64/000000/dashboard-layout.png" alt="Dashboard" style="height: 64px;"/>
+                                <p style="font-size: 0.7em;">5. Praktik Dashboard</p>
+                            </div>
+                        </div>
+                        <!-- Tetap pakai index agar muncul paling akhir -->
+                        <p class="fragment" data-fragment-index="5" style="margin-top: 60px; font-style: italic;">
+                            Siap? Yuk kita mulai! 😉
+                        </p>
+
+                        <aside class="notes">
+                           Ini peta perjalanan kita hari ini: Kenapa CT penting?, Resepnya, Hubungannya sama AI, Jebakannya, dan Praktik. Oke, kita masuk ke checkpoint pertama ya...
+                        </aside>
+                    </section>
+                </section>
+
+                <!-- Slide 2: Kenapa Mikir Kritis? -->
+                <section data-background-color="#f8f8f8">
+                    <!-- 2.0 Judul Bagian -->
+                    <section>
+                        <h2>Kenapa Sih Kita Perlu <br> <span class="fragment highlight-blue">Mikir Kritis</span> di SI OMB?</h2>
+                        <p class="fragment">(Lebih dari Sekadar Cepat Reaksi!)</p>
+
+                        <aside class="notes">
+                            Oke, sekarang kita masuk ke bagian 'why'. Kenapa sih repot-repot mikir kritis? Bukannya yang penting kerjaan cepet beres?
+                            Nah, di bagian ini kita akan lihat kenapa mikir kritis itu penting banget, terutama buat kerjaan kita di SI OMB yang penuh dinamika.
+                            Ini bukan cuma soal bener atau salah, tapi soal jadi lebih efektif, efisien, dan mungkin... sedikit lebih waras hehe.
+                        </aside>
+                    </section>
+
+                    <!-- 2.1 Reaktif vs. Reflektif & Trio Sakti (REVISI GIF) -->
+                    <section data-auto-animate>
+                        <div style="display: flex; justify-content: space-around; align-items: flex-start;">
+                            <div data-id="sikap-box-reaktif" style="text-align: center; width: 40%;">
+                                <h3><span style="font-size: 1.5em;">🚨</span> Sikap Reaktif</h3> <!-- Emoji Siren -->
+                                <!-- Ganti URL GIF Panik -->
+                                <!-- Ganti URL GIF Panik yang valid -->
+                                <img data-id="meme-img-sikap" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHZyMGhvbTc2NmowN2VyZTY4dmdtM2ZqcW5qeWIxMDZzN2Y5eTg3bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/HUkOv6BNWc1HO/giphy.gif" alt="Panik" width="180px">
+                                <p style="font-size: 0.7em;">Langsung 'Loncat' <br> Tambal Gejala</p>
+                            </div>
+                            <div data-id="sikap-box-reflektif" style="text-align: center; width: 40%; opacity: 0;">
+                             </div>
+                        </div>
+                         <aside class="notes">
+                            Nah, ini bedanya. Seringkali kita kejebak di sikap Reaktif. Ada error, langsung panik, langsung coba solusi pertama. Hasilnya kadang cuma nambal gejala... [Next]
+                        </aside>
+                    </section>
+
+                    <!-- Slide Vertikal Lanjutan (REVISI GIF) -->
+                    <section data-auto-animate>
+                         <div style="display: flex; justify-content: space-around; align-items: flex-start;">
+                            <div data-id="sikap-box-reaktif" style="text-align: center; width: 40%; opacity: 0.3;">
+                                <h3>🚨 Sikap Reaktif</h3>
+                                <img data-id="meme-img-sikap" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHZyMGhvbTc2NmowN2VyZTY4dmdtM2ZqcW5qeWIxMDZzN2Y5eTg3bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/HUkOv6BNWc1HO/giphy.gif" alt="Panik" width="180px" style="opacity: 0.3;">
+                                <p style="font-size: 0.7em;">Langsung 'Loncat' <br> Tambal Gejala</p>
+                            </div>
+                            <div data-id="sikap-box-reflektif" style="text-align: center; width: 40%; opacity: 1;">
+                                <h3><span style="font-size: 1.5em;">💡</span> Sikap Reflektif</h3> <!-- Emoji Bohlam -->
+                                <!-- Ganti URL GIF Mikir -->
+                                <!-- Ganti URL GIF Mikir yang valid -->
+                                <img data-id="meme-img-sikap" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3hla3Z2Mjg2dGFmYWk5eGE3d3dkYnNoemYwbmo4Zjk1ZDRmcjBqMSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/d3mlE7uhX8KFgEmY/giphy.gif" alt="Mikir" width="180px">
+                                <p style="font-size: 0.7em;">Pause & Think 🤔 <br> Cari Akar Masalah</p>
+                            </div>
+                        </div>
+                        <!-- ... (Visualisasi Trio Sakti tetap sama) ... -->
+                         <div class="fragment" style="margin-top: 30px; text-align: center;">
+                            <p style="font-weight: bold;">Didukung oleh 'Trio Sakti':</p>
+                             <div style="display: flex; justify-content: center; gap: 20px; margin-top: 10px;">
+                                <div style="border: 2px solid #e74c3c; padding: 10px; border-radius: 8px; width: 25%; font-size: 0.8em;">🧠<br>Critical Thinking</div>
+                                <div style="border: 2px solid #2ecc71; padding: 10px; border-radius: 8px; width: 25%; font-size: 0.8em;">⚡<br>Cognitive Agility</div>
+                                <div style="border: 2px solid #3498db; padding: 10px; border-radius: 8px; width: 25%; font-size: 0.8em;">🌐<br>Systems Thinking</div>
+                            </div>
+                            <p style="font-size: 0.7em;">Skill penting hadapi kompleksitas!</p>
+                        </div>
+                         <aside class="notes">
+                            Nah, beda kan? Reflektif itu kita jeda, mikir dulu, cari akarnya. [Next]
+                            Untuk bisa gini, kita nggak cuma butuh Critical Thinking (CT), tapi juga perlu lincah mikirnya (Cognitive Agility) dan bisa liat gambaran besar (Systems Thinking). Ini 'Trio Sakti' kita! Biar bisa adaptasi cepat dan paham koneksi antar masalah.
+                        </aside>
+                    </section>
+
+                    <!-- 2.2 Manfaat 1 - Ngerti 'Why'-nya (Revisi Visual) -->
+                    <section>
+                        <h3>Manfaat #1: Ngerti <span class="fragment highlight-blue">"Why"-nya!</span> 🎯</h3>
+                        <blockquote class="fragment" cite="https://simonsinek.com/find-your-why/">
+                            "People don't buy what you do; they buy <span style="background-color: yellow;">why</span> you do it..."
+                            <footer>- <cite>Simon Sinek</cite></footer>
+                        </blockquote>
+
+                        <!-- Visualisasi T-Chart -->
+                        <div class="fragment" style="margin-top: 30px; display: flex; justify-content: center; align-items: flex-start; gap: 5%;">
+                            <!-- Kolom Kiri: Mikir Biasa -->
+                            <div style="width: 40%; text-align: center; border-right: 2px solid #ccc; padding-right: 2.5%;">
+                                <h4>❌ Mikir Biasa</h4>
+                                <img src="https://img.icons8.com/fluency/80/000000/run-command.png" alt="Script Icon" class="fragment"/>
+                                <p class="fragment" style="font-size: 0.8em;">Fokus: "Jalanin Skrip"</p>
+                            </div>
+                            <!-- Kolom Kanan: Mikir Kritis -->
+                            <div style="width: 40%; text-align: center; padding-left: 2.5%;">
+                                <h4>✅ Mikir Kritis (Tanya Why?)</h4>
+                                 <img src="https://img.icons8.com/fluency/80/000000/groups.png" alt="Group Icon" class="fragment"/>
+                                 <p class="fragment" style="font-size: 0.8em;">Fokus: "Pembauran", "Keragaman"</p>
+                            </div>
+                        </div>
+
+                         <p class="fragment" style="margin-top: 30px; text-align: center;">
+                            💡 <strong style="color: blue;">Hasilnya:</strong> Lebih Hati-hati + <span class="fragment highlight-blue">Value Jelas!</span>
+                         </p>
+
+                        <aside class="notes">
+                            Manfaat pertama, kita paham 'Why'-nya. Kayak kata Simon Sinek [baca quote singkat, tekankan WHY].
+                            Contoh bagi kelompok Maba. [Tunjuk kolom kiri] Mikir biasa cuma fokus jalanin tugasnya. [Tunjuk kolom kanan] Mikir kritis tanya 'kenapa?', oh biar ada pembauran, keragaman. [Tunjuk hasil] Hasilnya, kerjaan kita lebih bermakna dan kita bisa jelasin nilainya. Ini juga bagian dari melihat dampak sistemik (Systems Thinking).
+                        </aside>
+                    </section>
+
+                    <!-- 2.3 Manfaat 2 - Hadapi Tekanan (REVISI IKON) -->
+                    <section>
+                        <h3>Manfaat #2: Tetap <span class="fragment highlight-green">Tenang</span> Saat 'Kebakaran' 🔥</h3>
+                        <p class="fragment">Situasi Khas: Info A ≠ Info B, Deadline Mepet!</p>
+                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWcweHE1eXd2bGV6ZGl6ODV2cmtubW5pbm13bmI2bDBudmh5OGVjcCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/QMHoU66sBXqqLqYvGO/giphy.gif" alt="This is fine" width="250px" class="fragment" style="margin: 10px auto; display: block;">
+                        <!-- Hapus data-fragment-index agar urutan sesuai DOM -->
+                        <div style="display: flex; justify-content: space-around; text-align: center; margin-top: 40px;">
+                            <div class="fragment fade-right" style="width: 20%;"> <!-- index 2 (setelah GIF) -->
+                                <img src="https://img.icons8.com/?size=100&id=kkGqzPJkguIf&format=png&color=000000" alt="Calm" style="height: 80px;"/>
+                                <p style="font-size: 0.7em;">1. Ambil Napas</p>
+                            </div>
+                             <div class="fragment fade-right" style="width: 20%;"> <!-- index 3 -->
+                                <img src="https://img.icons8.com/fluency/80/000000/search.png" alt="Fact" style="height: 80px;"/>
+                                <p style="font-size: 0.7em;">2. Kumpul Fakta Cepat</p>
+                            </div>
+                             <div class="fragment fade-right" style="width: 20%;"> <!-- index 4 -->
+                                <img src="https://img.icons8.com/fluency/80/000000/collaboration.png" alt="Collaborate" style="height: 80px;"/>
+                                <p style="font-size: 0.7em;">3. Diskusi Tim</p>
+                            </div>
+                             <div class="fragment fade-right" style="width: 20%;"> <!-- index 5 -->
+                                <img src="https://img.icons8.com/fluency/80/000000/checked-checkbox.png" alt="Decide" style="height: 80px;"/>
+                                <p style="font-size: 0.7em;">4. Putuskan & Siap!</p>
+                            </div>
+                        </div>
+                         <p class="fragment" style="font-size: 0.7em; margin-top: 30px;">Kolaborasi itu <span class="fragment highlight-red">kunci</span> saat info nggak lengkap!</p> <!-- index 6 & 7 (highlight) -->
+                        <aside class="notes">
+                            Manfaat kedua, CT bantu kita nggak panik pas genting. Situasi kayak gini pasti familiar ya?
+                            Daripada panik, coba [tunjuk langkah 1] tenang dulu, [tunjuk langkah 2] kumpulin fakta seadanya, [tunjuk langkah 3] diskusi cepat sama tim, baru [tunjuk langkah 4] ambil keputusan terbaik yang bisa diambil saat itu.
+                            Ingat, diskusi tim penting banget pas info abu-abu!
+                        </aside>
+                    </section>
+
+                    <!-- 2.4 Manfaat 3 & 4 - Komunikasi & Problem Solving (REVISI IKON & TEKS) -->
+                    <section>
+                        <h3>Manfaat #3 & #4: <br> Jago Komunikasi & Gali Sampai Akar!</h3>
+                        <div style="display: flex; justify-content: space-around; margin-top: 40px;">
+
+                            <div class="fragment" style="width: 45%; text-align: center; border-right: 1px solid #ccc; padding-right: 20px;">
+                                <!-- Ganti ikon Judul -->
+                                <h4><img src="https://img.icons8.com/fluency/48/000000/translation.png" alt="Translate Icon" style="vertical-align: middle; height: 48px; margin-right: 5px;"/> Jago Komunikasi (Clarity)</h4>
+                                <p style="font-size: 0.8em; margin-top: 10px;">"Terjemahkan" Teknis ⇄ Non-Teknis</p>
+                                <p style="font-size: 0.8em;">Instruksi <span class="fragment highlight-green">Jelas</span>, No Multitafsir!</p>
+                            </div>
+                            <div class="fragment" style="width: 45%; text-align: center; padding-left: 20px;">
+                                <!-- Ganti ikon Judul -->
+                                <h4><img src="https://img.icons8.com/fluency/48/000000/source-code.png" alt="Code Icon" style="vertical-align: middle; height: 48px; margin-right: 5px;"/> Gali Sampai Akar (Depth & Systems Thinking)</h4>
+                                <p style="font-size: 0.8em; margin-top: 10px;">Punya <span class="fragment highlight-blue">'Eagle View'</span> Sistem</p>
+                                <p style="font-size: 0.8em;">Cari <span class="fragment highlight-blue">Akar Masalah</span> (Root Cause)</p>
+                            </div>
+
+                        </div>
+
+                        <aside class="notes">
+                            Manfaat ketiga, [jelaskan singkat Clarity dalam komunikasi].
+                            Manfaat keempat, [jelaskan singkat Depth & Systems Thinking dalam problem solving].
+                        </aside>
+                    </section>
+                </section>
+
+                <!-- Slide 3: Resep Rahasia CT (5 Elemen) -->
+                <section data-transition="convex" data-background-color="#e8f8f5">
+                    <!-- 3.0 Judul Bagian -->
+                    <section>
+                        <h2><span class="fragment highlight-red">5</span> 'Bumbu Rahasia' <br> Biar Mikir Makin Kritis 🍳</h2>
+                        <div style="display: flex; justify-content: center; align-items: center; margin-top: 30px;">
+                            <img src="https://img.icons8.com/dotty/100/000000/ingredients.png" alt="Ingredients Icon" class="fragment grow" style="margin-right: 20px;"/>
+                            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc2RwMndyNDBocWczeHNlZ3VrOGxxZXJrYTdzaXNsenV3ZWFpZmszZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l4Jz3a8jO92crUlWM/giphy.gif" alt="Salt Bae" width="180px" class="fragment" style="margin-left: 20px;"/>
+                        </div>
+                        <p class="fragment" style="font-size: 0.8em;">Ini fondasi penting biar pemikiran kita terstruktur!</p>
+                        <aside class="notes">
+                            Oke, setelah tahu kenapa CT penting, sekarang kita bedah 'resep'-nya. Ada 5 elemen dasar yang jadi fondasi biar kita bisa mikir secara kritis dan terstruktur. Anggap aja ini bumbu wajib biar masakan pikiran kita enak, hehe.
+                            Mari kita lihat satu per satu... [Panah bawah]
+                        </aside>
+                    </section>
+
+                    <!-- 3.1 Elemen 1 - Clarity (REVISI IKON) -->
+                    <section>
+                        <!-- Ganti ikon Question Mark -->
+                        <h3><img src="https://img.icons8.com/fluency/48/000000/question-mark.png" alt="?" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Clarity (Kejelasan)</h3>
+                        <p class="fragment"><em>"Paham dulu masalahnya apa!"</em></p>
+                        <p class="fragment highlight-blue" style="margin-top: 15px; font-size: 0.9em;">❓ Tanya: "Maksudnya?", "Contoh?", "Goal?"</p>
+                        <div style="display: flex; justify-content: space-around; align-items: center; margin-top: 40px; font-size: 0.8em;">
+                            <div class="fragment fade-right" style="text-align: center;">
+                                <p>❌ Web Lambat?</p>
+                                <img src="https://img.icons8.com/fluency/80/000000/snail.png" alt="Lambat"/>
+                            </div>
+                            <div class="fragment" style="font-size: 3em;">➔</div>
+                             <div class="fragment fade-left" style="text-align: center;">
+                                <p>✅ Pas Apa? Dimana?</p>
+                                <img src="https://img.icons8.com/fluency/80/000000/zoom-in.png" alt="Perjelas"/>
+                            </div>
+                        </div>
+                        <p class="fragment" style="font-size: 0.7em; margin-top: 30px;">Kunci: <span class="fragment highlight-red">JELASKAN DULU!</span></p>
+                        <aside class="notes">
+                            Clarity! Paling dasar. Jangan langsung lompat ke solusi kalau masalahnya aja belum jelas. Tanya terus sampai detail. Kayak web lambat, harus jelas dulu lambatnya kenapa dan di mana. Pengalaman di Outsco juga gitu, harus jelas dulu butuhnya apa sebelum bikin sistem. Intinya: Perjelas!
+                        </aside>
+                    </section>
+
+                    <!-- 3.2 Elemen 2 - Accuracy (REVISI IKON & FORMAT) -->
+                    <section>
+                         <!-- Ganti ikon Check -->
+                         <h3><img src="https://img.icons8.com/fluency/48/000000/checked-checkbox.png" alt="Check" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Accuracy (Ketepatan)</h3>
+                        <p class="fragment"><em>"Info/Datanya beneran valid nggak?"</em></p>
+                        <p class="fragment highlight-green" style="margin-top: 15px; font-size: 0.9em;">❓ Tanya: "Sumber?", "Validasi?", "Update?"</p>
+                         <div style="display: flex; justify-content: space-around; align-items: center; margin-top: 40px; font-size: 0.8em;">
+                            <div class="fragment fade-right" style="text-align: center;">
+                                <p>❓ Data GForm Maba</p>
+                                <img src="https://img.icons8.com/color/80/000000/google-forms.png" alt="Forms"/>
+                            </div>
+                            <div class="fragment" style="font-size: 3em;">➔</div>
+                             <div class="fragment fade-left" style="text-align: center;">
+                                <p>✅ Cross-check? Valid?</p>
+                                <!-- Ganti ikon Validasi (Sudah sesuai di kode sebelumnya, tidak perlu ganti lagi) -->
+                                <img src="https://img.icons8.com/?size=100&id=Zy5ghkQj2rKy&format=png&color=000000" alt="Validasi" style="height: 80px;"/>
+                            </div>
+                        </div>
+                        <p class="fragment" style="font-size: 0.7em; margin-top: 30px;">Ingat Prinsip <span class="fragment highlight-red">GIGO!</span> (Garbage In, Garbage Out)</p>
+                        <aside class="notes">
+                            Accuracy! Pastikan data atau info yang kita pakai itu bener. Jangan sampai GIGO. Data Maba dari GForm contohnya, harus dicek lagi keakuratannya. Pengalaman lomba juga sama, data mentah wajib divalidasi. Kuncinya: Cek Fakta!
+                        </aside>
+                    </section>
+
+                    <!-- 3.3 Elemen 3 - Relevance (REVISI IKON) -->
+                    <section>
+                        <!-- Ganti ikon Link -->
+                        <h3><img src="https://img.icons8.com/fluency/48/000000/link.png" alt="Link" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Relevance (Keterkaitan)</h3>
+                        <p class="fragment"><em>"Nyambung nggak sih infonya sama masalah utama?"</em></p>
+                        <p class="fragment highlight-blue" style="margin-top: 15px; font-size: 0.9em;">❓ Tanya: "Hubungannya?", "Penting buat solusi?"</p>
+                        <div style="margin-top: 40px; font-size: 0.8em; text-align: center;">
+                             <p class="fragment">Lagi Debugging Data Maba Error:</p>
+                             <div>
+                                <span class="fragment fade-right" style="text-decoration: line-through; color: red;">Info Merk Laptop Panitia</span>
+                                <span class="fragment" style="margin: 0 20px;"> VS </span>
+                                <span class="fragment fade-left" style="color: green; border-bottom: 2px solid green;">Log Server & Query SQL</span>
+                            </div>
+                             <img src="https://img.icons8.com/fluency/80/000000/filter.png" alt="Filter" class="fragment grow" style="margin-top: 20px;"/>
+                        </div>
+                        <p class="fragment" style="font-size: 0.7em; margin-top: 30px;">Kunci: <span class="fragment highlight-red">FOKUS YANG PENTING!</span></p>
+                        <aside class="notes">
+                            Relevance! Setelah jelas & akurat, filter lagi, mana info yang beneran relevan sama masalah. Pas debugging contohnya, info laptop panitia nggak penting, tapi log server itu krusial. Fokus ke yang bener-bener ngebantu mecahin masalah.
+                        </aside>
+                    </section>
+
+                    <!-- 3.4 Elemen 4 - Depth (REVISI IKON & LAYOUT ICEBERG) -->
+                    <section>
+                         <!-- Ganti ikon Depth -->
+                         <h3><img src="https://img.icons8.com/fluency/48/000000/depth.png" alt="Depth" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Depth (Kedalaman)</h3>
+                        <p class="fragment"><em>"Udah gali sampe akarnya belum?"</em></p>
+                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGpydnhveHFhZGZyNmJiMjlhMGd3Ym55dHhoNTdzemExNWRxaDJpaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Moe3v6qsUh3vILZ84e/giphy.gif" alt="Looking Closely" width="180px" class="fragment" style="margin: 10px auto; display: block;">
+                        <p class="fragment highlight-green" style="margin-top: 15px; font-size: 0.9em;">❓ Tanya: "Kenapa?", "Kenapa lagi?", "Faktor lain?"</p>
+
+                        <!-- Visualisasi Contoh: Gunung Es (Adjusted Height) -->
+                        <div class="fragment" style="margin-top: 30px; text-align: center;">
+                            <div style="width: 50%; height: 60px; background-color: #3498db; margin: auto; position: relative; border-radius: 5px 5px 0 0; display: flex; align-items: center; justify-content: center;">
+                                <p style="color: white; font-size: 0.8em;">Gejala: Data Nggak Sinkron</p>
+                            </div>
+                            <div style="width: 80%; background-color: #a9cce3; margin: auto; position: relative; top: -1px; border-radius: 0 0 10px 10px; padding-top: 10px; padding-bottom: 45px;"> <!-- Tambah padding-bottom -->
+                                <p style="padding-top: 10px; font-size: 0.7em;">Akar Masalah (Mungkin):<br>
+                                     <!-- Fragment untuk tiap akar masalah -->
+                                     <span class="fragment">- Script Buggy?</span> <br>
+                                     <span class="fragment">- API Change?</span> <br>
+                                     <span class="fragment">- Setting Salah?</span> <br>
+                                     <span class="fragment">- Koneksi Intermittent?</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Teks kunci muncul setelah semua akar masalah -->
+                        <p class="fragment" style="font-size: 0.7em; margin-top: -30px; position: relative; z-index: 5;">
+                             Kunci: <span class="fragment highlight-red">GALI AKARNYA!</span> (Kayak 5 Whys)
+                        </p>
+                        <aside class="notes">
+                            Depth! Jangan cuma liat permukaan. Kayak gunung es ini, yang keliatan (gejala) cuma sebagian kecil. Masalah sebenarnya (akar) ada di bawah. Gali terus pake pertanyaan 'kenapa'. Data nggak sinkron itu gejalanya, akarnya bisa macem-macem. Harus investigasi mendalam.
+                        </aside>
+                    </section>
+
+                    <!-- 3.5 Elemen 5 - Logic (REVISI IKON & VISUALISASI) -->
+                    <section>
+                        <!-- Ganti ikon Logic -->
+                         <!-- Ganti ikon Logic -->
+                         <h3><img src="https://img.icons8.com/?size=100&id=iUfXJiAIQEzg&format=png&color=000000" alt="Logic" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Logic (Logika)</h3>
+                        <p class="fragment"><em>"Alur mikirnya masuk akal & konsisten?"</em></p>
+                        <p class="fragment highlight-blue" style="margin-top: 15px; font-size: 0.9em;">❓ Tanya: "Make sense?", "Bukti kuat?", "Konsisten?"</p>
+
+                        <!-- Visualisasi Contoh: Rantai Logika (Adjusted Padding) -->
+                        <div class="fragment" style="display: flex; justify-content: center; align-items: center; margin-top: 40px; gap: 10px;">
+                             <div style="border: 1px solid; padding: 10px; border-radius: 5px; font-size: 0.8em;">Hipotesis: Race Condition</div> <span style="font-size: 1.5em;">➔</span>
+                             <div style="border: 1px solid; padding: 10px; border-radius: 5px; font-size: 0.8em;">Solusi: Locking</div> <span style="font-size: 1.5em;">➔</span>
+                             <div style="border: 2px solid green; padding: 10px; border-radius: 5px; font-size: 0.8em;">✅ Logis!</div>
+                        </div>
+                         <p class="fragment" style="font-size: 0.7em; margin-top: 30px;">Kunci: <span class="fragment highlight-red">ARGUMEN KUAT!</span></p>
+
+                        <aside class="notes">
+                            Logic! Terakhir, pastikan semua alur berpikir dan solusi kita itu logis, masuk akal, dan didukung alasan kuat. Nggak ada lompatan aneh. Contohnya hipotesis bug ini, solusinya logis karena memang itu cara mengatasi masalah akses bersamaan. Bikin sistem juga harus gitu, alurnya runut dan bisa dijelaskan. Pastikan argumen kita kuat!
+                        </aside>
+                    </section>
+                </section>
+
+                <!-- Slide 4: Alat Bantu Mikir + Era AI -->
+                <section data-background-transition="slide">
+                    <!-- 4.0 Judul Bagian -->
+                    <section data-background-image="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" data-background-opacity="0.3">
+                        <h2>Biar Nggak Ngawang: <br> <span class="fragment highlight-green">Tools Mikir</span> & <span class="fragment highlight-blue">Tips Era AI</span> 🧠🤖</h2>
+                        <p class="fragment" style="margin-top: 30px;">Beberapa 'senjata' biar mikir kritis lebih terarah & relevan!</p>
+                        <aside class="notes">
+                            Setelah tahu fondasinya (5 elemen), sekarang kita bahas 'alat bantunya'. Ini kayak toolkit yang bisa kita pakai biar proses mikir kritis kita lebih terstruktur.
+                            Plus, kita juga bakal singgung gimana caranya tetep jadi pemikir kritis yang cerdas di zaman AI yang makin canggih ini.
+                            Yuk, kita lihat tools pertama... [Panah bawah]
+                        </aside>
+                    </section>
+
+                    <!-- 4.1 Tool 1 - 5 Whys (REVISI FORMAT TEXT & IKON) -->
+                    <section data-auto-animate>
+                        <h3>Tool #1: The <span class="fragment highlight-red">5 Whys</span> Technique 🕵️‍♀️</h3>
+                        <p class="fragment">Gali <span class="fragment highlight-blue">AKAR MASALAH</span> dengan tanya "Kenapa?" terus.</p>
+                        <!-- REVISI STYLING & FORMAT -->
+                        <div data-id="why-cascade" style="margin-top: 30px; font-size: 0.8em; width: 80%; margin-left: auto; margin-right:auto;">
+                            <div style="background-color: #eee; padding: 8px; border-radius: 5px; margin-bottom: 5px;">❓ <strong>Laporan Telat?</strong> ➔ Data PJK Belum Masuk</div>
+                        </div>
+
+                        <aside class="notes">
+                            Tool pertama yang paling gampang tapi sering efektif: 5 Whys.
+                            Ini bagus banget buat ngelatih elemen 'Depth'. Jangan berhenti di jawaban pertama.
+                            Contohnya kasus laporan telat ini... [Tekan spasi/panah bawah]
+                            Kenapa data PJK belum masuk? [Tekan spasi/panah bawah]
+                            Kenapa mereka kesulitan input? [Tekan spasi/panah bawah]
+                            Kenapa tampilannya kurang intuitif? [Tekan spasi/panah bawah]
+                            Kenapa nggak ada user testing? Nah, kemungkinan besar akar masalahnya di situ! Solusinya jadi beda kan, bukan cuma 'ngomelin' PJK.
+                        </aside>
+                    </section>
+
+                    <!-- Slide Vertikal Lanjutan 5 Whys (REVISI FORMAT TEXT & IKON) -->
+                    <section data-auto-animate>
+                         <h3>Tool #1: The <span class="fragment highlight-red">5 Whys</span> Technique 🕵️‍♀️</h3>
+                        <p>Gali AKAR MASALAH dengan tanya "Kenapa?" terus.</p>
+                        <!-- REVISI STYLING & FORMAT -->
+                        <div data-id="why-cascade" style="margin-top: 30px; font-size: 0.8em; width: 80%; margin-left: auto; margin-right:auto;">
+                            <div style="background-color: #eee; padding: 8px; border-radius: 5px; margin-bottom: 5px;">❓ <strong>Laporan Telat?</strong> ➔ Data PJK Belum Masuk</div>
+                            <div style="background-color: #ddd; padding: 8px; border-radius: 5px; margin-bottom: 5px;">❓ <strong>Belum Masuk?</strong> ➔ Ada yg Kesulitan Input</div>
+                             <div style="background-color: #ccc; padding: 8px; border-radius: 5px; margin-bottom: 5px;">❓ <strong>Kesulitan Input?</strong> ➔ UI Kurang Intuitif</div>
+                             <div style="background-color: #bbb; padding: 8px; border-radius: 5px; margin-bottom: 5px;">❓ <strong>UI Jelek?</strong> ➔ Nggak Ada User Testing</div>
+                            <div style="background-color: #aaa; padding: 8px; border-radius: 5px; margin-bottom: 5px; color: red; font-weight: bold;">❓ <strong>Nggak Testing?</strong> ➔ Waktu Mepet & Asumsi! (AKAR!)</div>
+                        </div>
+                    </section>
+
+                    <!-- 4.2 Tool 2 - Decision Matrix (REVISI IKON, TABEL, TIPE KEPUTUSAN) -->
+                    <section>
+                        <!-- Ganti ikon Scales -->
+                        <h3><img src="https://img.icons8.com/fluency/48/000000/scales.png" alt="Scales" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Tool #2: Decision Matrix <span class="fragment">(Biar Objektif!)</span></h3>
+                        <p class="fragment">Pilih opsi terbaik pakai kriteria & skor.</p>
+                        <p class="fragment">Cocok pas resource terbatas!</p>
+
+                        <p class="fragment" style="margin-top: 15px;">Kasus: Pilih Tools Olah Data (Python vs. GSheet)</p> <!-- Kurangi margin-top -->
+                        <!-- Tabel Konsep (Adjusted Layout) -->
+                        <table class="fragment" style="font-size: 0.7em; margin: 15px auto; border-collapse: collapse; width: 75%;"> <!-- Lebarkan tabel, kurangi margin -->
+                             <thead>
+                                <tr style="background-color: #e0e0e0;"> <!-- Warna header sedikit lebih gelap -->
+                                    <th style="border: 1px solid #bbb; padding: 10px; text-align: left;">Kriteria Utama</th> <!-- Padding, align left -->
+                                    <th style="border: 1px solid #bbb; padding: 10px; text-align: center;">🐍 Python</th> <!-- Padding, align center -->
+                                    <th style="border: 1px solid #bbb; padding: 10px; text-align: center;">📊 GSheet</th> <!-- Padding, align center -->
+                                </tr>
+                            </thead>
+                             <tbody>
+                                <tr><td style="border: 1px solid #bbb; padding: 10px;">Kemudahan Tim Pakai?</td><td style="border: 1px solid #bbb; padding: 10px; text-align: center; vertical-align: middle;">--</td><td style="border: 1px solid #bbb; padding: 10px; text-align: center; vertical-align: middle;">++</td></tr> <!-- Padding, align center, vertical middle -->
+                                <tr><td style="border: 1px solid #bbb; padding: 10px;">Waktu Siap Pakai?</td><td style="border: 1px solid #bbb; padding: 10px; text-align: center; vertical-align: middle;">-+</td><td style="border: 1px solid #bbb; padding: 10px; text-align: center; vertical-align: middle;">++</td></tr> <!-- Padding, align center, vertical middle -->
+                                <tr><td style="border: 1px solid #bbb; padding: 10px;">Kecepatan Proses?</td><td style="border: 1px solid #bbb; padding: 10px; text-align: center; vertical-align: middle;">++</td><td style="border: 1px solid #bbb; padding: 10px; text-align: center; vertical-align: middle;">-+</td></tr> <!-- Padding, align center, vertical middle -->
+                                <tr style="background-color: #f5f5f5;"><td style="border: 1px solid #bbb; padding: 10px;"><strong>Kesimpulan Kasus Ini?</strong></td><td style="border: 1px solid #bbb; padding: 10px; text-align: center; vertical-align: middle;" colspan="2" class="fragment highlight-green"><strong>GSheet Lebih Cocok!</strong></td></tr> <!-- Padding, align center, vertical middle -->
+                            </tbody>
+                        </table>
+                        <p class="fragment" style="font-size: 0.65em; margin-top: 5px;">*Penilaian kualitatif (+/-) hanya contoh.</p> <!-- Kecilkan font, kurangi margin -->
+                        <!-- Visual Tipe Keputusan (Adjusted Layout) -->
+                        <div class="fragment" style="margin-top: 15px; display: flex; justify-content: center; gap: 40px; font-size: 0.7em;"> <!-- Kurangi margin-top, tambah gap -->
+                             <div style="border: 1px dashed #aaa; padding: 8px 12px; border-radius: 5px;">🚪 Keputusan Tipe 1 (Susah Balik)</div> <!-- Tambah border -->
+                             <div style="border: 1px dashed #aaa; padding: 8px 12px; border-radius: 5px;">🔄 Keputusan Tipe 2 (Bisa Koreksi)</div> <!-- Tambah border -->
+                        </div>
+                        <p class="fragment" style="font-size: 0.7em; margin-top: 5px;">Pertimbangkan jenis keputusannya!</p> <!-- Kurangi margin-top -->
+
+                        <aside class="notes">
+                            Decision Matrix bantu kita objektif. Tentukan kriteria, bandingkan opsinya. [Jelaskan tabel ringkas]. Di kasus ini, GSheet mungkin menang karena kemudahan tim & waktu. Tapi ini tergantung bobot kriterianya ya.
+                            Plus, pikirin juga [jelaskan Tipe 1 vs Tipe 2]. Kalau gampang diubah (Tipe 2), kita bisa lebih fleksibel.
+                        </aside>
+                    </section>
+
+                    <!-- 4.3 Tool 3 - Systems Mapping (REVISI IKON & DIAGRAM) -->
+                    <section>
+                        <!-- Ganti ikon Networking -->
+                        <h3><img src="https://img.icons8.com/fluency/48/000000/networking-manager.png" alt="Network" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Tool #3: Systems Mapping <br> <span class="fragment">(Liat Koneksinya!)</span></h3>
+                        <p class="fragment">Coba petakan Alur Kerja / Data di OMB.</p>
+
+                        <!-- Diagram Simpel (Improved Layout & Arrows) -->
+                        <div class="fragment" style="margin-top: 30px; position: relative; height: 200px; font-size: 0.8em;">
+                            <div style="position: absolute; top: 40%; left: 5%; border: 1px solid; padding: 10px; border-radius: 5px;">Input (Divisi Lain)</div>
+                            <!-- Ganti ** ke <strong> -->
+                            <div style="position: absolute; top: 40%; left: 35%; border: 2px solid blue; padding: 15px; border-radius: 5px;">⚙️ <strong>Tim SI OMB</strong></div>
+                            <div style="position: absolute; top: 10%; right: 5%; border: 1px solid; padding: 10px; border-radius: 5px;">Output (Website)</div>
+                            <div style="position: absolute; top: 70%; right: 5%; border: 1px solid; padding: 10px; border-radius: 5px;">Output (Laporan)</div>
+
+                            <!-- Panah Lebih Jelas (Karakter Unicode) -->
+                             <div style="position: absolute; top: 50%; left: 27%; font-size: 2.5em; color: #555;">→</div>
+                             <div style="position: absolute; top: 32%; left: 62%; font-size: 2.5em; color: #555; transform: rotate(-30deg);">→</div>
+                             <div style="position: absolute; top: 62%; left: 62%; font-size: 2.5em; color: #555; transform: rotate(30deg);">→</div>
+                        </div>
+                        <!-- Hapus/Ubah teks "Bantu lihat..." -->
+                        <p class="fragment" style="font-size: 0.7em; margin-top: 30px;">Tujuannya: Paham Sistem + Lincah Adaptasi ("Holistic Flexibility").</p>
+
+                        <aside class="notes">
+                            Systems Mapping! Ini cara visual buat 'melihat' alur kerja atau data. [Jelaskan diagram simpel]. Dengan gini, kita bisa lebih gampang nemu di mana potensi masalah (bottleneck) atau bagian mana yang saling bergantung. Ini nyambung banget sama Systems Thinking.
+                        </aside>
+                    </section>
+
+                    <!-- 4.4 Mikir Kritis & AI - Sebelum Prompt -->
+                    <section>
+                        <h3>Ngobrol Cerdas Sama AI 🤖 <br> <span class="fragment highlight-red">(Step Krusial SEBELUM Nge-Prompt!)</span></h3>
+                        <p class="fragment">AI itu keren, tapi dia butuh <span class="fragment highlight-blue">arahan jelas</span> dari kita!</p>
+                        <p class="fragment">Jangan asal minta, biar hasilnya nggak ngaco:</p>
+                        <ol style="font-size: 0.85em; margin-top: 20px;">
+                            <li class="fragment fade-up"><strong>Pahami Dulu Problem & Konteksnya:</strong> Mau ngapain? Outputnya apa? Riset dikit.</li>
+                            <!-- Ganti * ke <em> -->
+                            <li class="fragment fade-up"><strong>Bikin Kerangka Logika Kasar:</strong> Coret-coret alur pikir utamanya. <em>Breakdown</em> langkah.</li>
+                            <li class="fragment fade-up"><strong>Validasi Kerangka (Opsional):</strong> Diskusiin/tanya AI, "Logikaku gini bener gak?"</li>
+                            <li class="fragment fade-up"><strong>Baru Minta AI Berdasarkan Kerangka:</strong> Kasih prompt detail!</li>
+                        </ol>
+                        <!-- Ganti URL GIF -->
+                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDZmbnFjNmwwb3Exenpvemt1bjNlaWhmeGQ3cTN6MWIyYjgxZTRnMCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/OdfvPlEL08VGW05RYW/giphy.gif" alt="Instruksi Jelas" width="200px" class="fragment" style="margin-top: 20px;">
+
+                        <aside class="notes">
+                            Nah, ini penting di era sekarang. Gimana pakai AI secara efektif? Kuncinya: jangan anggap AI itu dukun sakti. Anggap dia asisten pintar yang butuh instruksi jelas.
+                            Sebelum kamu ngetik prompt di ChatGPT atau Copilot, lakuin dulu 4 langkah ini [Jelaskan 4 langkah].
+                            Intinya, kita yang pegang kendali logikanya. Kita kasih kerangka berpikirnya, AI bantu detail teknisnya. Kalau nggak, ya AI-nya bingung kayak GIF ini, hehe. Hasilnya jadi lebih akurat dan sesuai kebutuhan kita.
+                        </aside>
+                    </section>
+
+                    <!-- 4.5 Mikir Kritis & AI - Sesudah Output (REVISI IKON & VISUALISASI) -->
+                    <section>
+                        <!-- Ganti ikon Robot -->
+                        <h3><img src="https://img.icons8.com/fluency/48/000000/robot.png" alt="Robot" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Ngobrol Cerdas Sama AI <br> (... dan SETELAH Dapat Jawabannya!)</h3>
+                        <p class="fragment">Dapat output AI? Jangan langsung <span class="fragment highlight-blue">Percaya 100%!</span> Cek & Ricek!</p>
+
+                        <!-- Visualisasi Poin Kunci (Adjusted Layout) -->
+                        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; margin-top: 25px; font-size: 0.7em; text-align: center;"> <!-- Adjust gap, margin-top -->
+                             <div class="fragment" style="border: 1px solid #bbb; padding: 12px; border-radius: 8px; width: 45%; background-color: #f8f9fa;">🧠 Cek Logika & Alur</div> <!-- Adjust padding, width, border, background -->
+                             <div class="fragment" style="border: 1px solid #bbb; padding: 12px; border-radius: 8px; width: 45%; background-color: #f8f9fa;">✅ Validasi Hasil (Testing!)</div> <!-- Adjust padding, width, border, background -->
+                             <div class="fragment" style="border: 1px solid #bbb; padding: 12px; border-radius: 8px; width: 45%; background-color: #f8f9fa;">🌍 Sesuaikan Konteks OMB</div> <!-- Adjust padding, width, border, background -->
+                             <div class="fragment highlight-red" style="border: 2px solid red; padding: 12px; border-radius: 8px; width: 45%; background-color: #fff0f0;">❗ Waspada Over-reliance!</div> <!-- Adjust padding, width, background -->
+                             <div class="fragment" style="border: 1px solid #2ecc71; padding: 12px; border-radius: 8px; width: 45%; background-color: #eafaf1;">🌱 Pakai AI buat Belajar/Refleksi</div> <!-- Adjust padding, width, background -->
+                        </div>
+
+                        <aside class="notes">
+                            Kerjaan belum selesai pas AI ngasih jawaban! Justru di sini CT kita diuji lagi.
+                            Selalu cek ulang outputnya [Jelaskan poin 1-3]. Jangan anggap AI selalu benar. Dia nggak tahu seluk-beluk OMB kita.
+                            Poin penting [Jelaskan poin 4 - Over-reliance]. Jangan sampai kita jadi 'bodoh' karena AI.
+                            Tapi AI juga bisa jadi teman belajar [Jelaskan poin 5 - AI for Reflection]. Minta dia jelasin konsep, atau bantu kita evaluasi.
+                        </aside>
+                    </section>
+                </section>
+
+                <!-- Slide 5: Jebakan Pikiran (Bias) -->
+                <section data-transition="concave">
+                    <!-- 5.0 Judul Bagian -->
+                    <section>
+                        <h2>Awas <span class="fragment highlight-red">'Kepleset'</span> Mikir! <br> Kenali Jebakan Pikiran (Bias) 😵</h2>
+                        <!-- Ganti ikon Road Block -->
+                        <!-- Ganti ikon Road Block/Warning -->
+                        <div style="display: flex; justify-content: center; align-items: center; margin-top: 30px;">
+                            <img src="https://img.icons8.com/fluency/96/000000/error.png" alt="Warning Sign" class="fragment grow" style="height: 96px; margin-right: 20px;"/>
+                            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmZxZjFtbzl5N3FrdHYxYjN6cjY2NnN6MnFleG9qYm95Mm41dWNudiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/0Z4XpW9sNlS431Ayr5/giphy.gif" alt="Falling into hole" width="180px" class="fragment" style="margin-left: 20px;"/>
+                        </div>
+                        <p class="fragment" style="font-size: 0.8em;">Otak kita suka 'jalan pintas', tapi kadang menyesatkan!</p>
+                        <aside class="notes">
+                            Oke, kita udah punya fondasi (5 elemen) dan alat bantu. Tapi hati-hati, pikiran kita sendiri kadang bisa jadi 'musuh dalam selimut'. Ada yang namanya Cognitive Bias atau Jebakan Pikiran.
+                            Ini penting dikenali biar keputusan kita nggak bias atau keliru, terutama pas lagi dikejar waktu di OMB. Yuk kita lihat apa aja jebakannya... [Panah bawah]
+                        </aside>
+                    </section>
+
+                    <!-- 5.1 Apa itu Bias? -->
+                    <section>
+                        <h3>Apa Sih <span class="fragment highlight-blue">Bias Kognitif</span> Itu?</h3>
+                        <p class="fragment">"Jalan Pintas" mental otomatis yang otak kita pakai buat ambil keputusan cepat.</p>
+                        <p class="fragment">Masalahnya: Jalan pintas ini <span class="fragment highlight-red">nggak selalu akurat</span> & bisa bikin salah nilai!</p>
+                        <!-- Ganti URL GIF -->
+                        <!-- Ganti URL GIF -->
+                        <img src="https://media.giphy.com/media/wRLILnt0OAHskaylui/giphy.gif?cid=ecf05e479c5qgfxet8uugd3csigf0jr77194upehvgyw2q76&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Wrong Way Sign" width="250px" class="fragment" style="margin-top: 30px;">
+
+                        <aside class="notes">
+                            Jadi gampangnya, bias kognitif itu kayak 'shortcut' di otak kita. Biar nggak lama mikir, otak kita punya pola-pola tertentu.
+                            Masalahnya, shortcut ini seringkali nggak liat konteks atau data lengkap, jadi hasilnya bisa salah atau nggak objektif. Kayak ngambil jalan pintas tapi malah nyasar.
+                            Kenapa penting tahu ini? Biar kita bisa lebih waspada sama cara mikir kita sendiri.
+                        </aside>
+                    </section>
+
+                    <!-- 5.2 Contoh Bias Umum (REVISI IKON & FORMAT) -->
+                    <section>
+                        <h3>Contoh Jebakan Pikiran yang Sering Muncul:</h3>
+                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOW5obXdsaWd0MmdrMDB2dnZ5M3A4ZTFnYnNjbWNuaDY1OTBqZ3FtdiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/WRQBXSCnEFJIuxktnw/giphy.gif" alt="Confused Math Lady" width="180px" class="fragment" style="margin: 10px auto; display: block;">
+                        <div style="display: flex; justify-content: space-around; text-align: center; margin-top: 20px; gap: 15px;">
+                            <!-- Bias 1: Konfirmasi -->
+                            <div class="fragment" style="width: 30%;">
+                                <img src="https://img.icons8.com/fluency/80/000000/approval.png" alt="Confirmation" style="height: 80px;"/>
+                                <h4 style="color: #e74c3c;">Bias Konfirmasi</h4>
+                                <p style="font-size: 0.7em;">Cari info yg <strong style="color:#e74c3c;">cocok</strong> sama <br> pendapat awal aja.</p>
+                                <p style="font-size: 0.6em; font-style: italic;">(Misal: Yakin error di DB, cuma cek itu).</p>
+                            </div>
+                            <!-- Bias 2: Jumping -->
+                             <div class="fragment" style="width: 30%;">
+                                <!-- Ganti ikon Jumping -->
+                                <img src="https://img.icons8.com/?size=100&id=4HbDra9T8KBE&format=png&color=000000" alt="Jumping" style="height: 80px;"/>
+                                <h4 style="color: #f39c12;">Jumping to Conclusions</h4>
+                                <p style="font-size: 0.7em;">Langsung <strong style="color:#f39c12;">nyimpulin</strong> <br> padahal bukti minim.</p>
+                                <p style="font-size: 0.6em; font-style: italic;">(Misal: 1 laporan error -> "Sistem down!").</p>
+                            </div>
+                            <!-- Bias 3: Groupthink -->
+                             <div class="fragment" style="width: 30%;">
+                                <img src="https://img.icons8.com/fluency/80/000000/group.png" alt="Group" style="height: 80px;"/>
+                                <h4 style="color: #3498db;">Groupthink</h4>
+                                <p style="font-size: 0.7em;">Ikut <strong style="color:#3498db;">mayoritas</strong> <br> biar 'aman' / gak debat.</p>
+                                <p style="font-size: 0.6em; font-style: italic;">(Misal: Semua setuju A, padahal ragu).</p>
+                            </div>
+                        </div>
+
+                        <aside class="notes">
+                            Ini beberapa contoh bias yang sering banget kejadian, apalagi pas kerja tim atau dikejar deadline.
+                            [Bias Konfirmasi]: Kita cenderung cari bukti yang mendukung apa yang udah kita percaya aja.
+                            [Jumping to Conclusions]: Langsung ambil kesimpulan padahal infonya belum cukup.
+                            [Groupthink]: Ikut-ikutan aja sama pendapat mayoritas biar nggak dianggap aneh atau bikin konflik.
+                            Pernah ngalamin salah satunya? Pasti sering ya, hehe.
+                        </aside>
+                    </section>
+
+                    <!-- 5.3 Cara Melawan Bias (HAPUS FRAGMENT INDEX & ATUR HIGHLIGHT) -->
+                    <section>
+                        <h3><img src="https://img.icons8.com/fluency/48/000000/shield.png" alt="Shield" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Gimana Cara Ngelawan Jebakan Ini?</h3>
+                        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px; font-size: 0.7em; text-align: center;">
+                            <div class="fragment" style="border: 1px solid; padding: 10px; border-radius: 8px; width: 40%;">🧐 <strong>Sadar Diri:</strong> Akui kita bisa bias!</div>
+                            <div class="fragment" style="border: 1px solid; padding: 10px; border-radius: 8px; width: 40%;">❓ <strong>Tantang Asumsi:</strong> "Yakin nih?", "Alternatif?"</div>
+                            <div class="fragment" style="border: 1px solid; padding: 10px; border-radius: 8px; width: 40%;">🔄 <strong>Cari Bukti Lawan:</strong> Jangan cuma cari pembenaran.</div>
+                            <!-- Highlight muncul setelah teks -->
+                            <div class="fragment" style="border: 1px solid; padding: 10px; border-radius: 8px; width: 40%;">🤝 <strong>Diskusi Terbuka & Beragam Perspektif.</strong><span class="fragment highlight-green" style="display: block; margin-top: -10px; height: 2px;"></span></div>
+                            <div class="fragment" style="border: 1px solid; padding: 10px; border-radius: 8px; width: 40%;">😈 <strong>Tunjuk 'Devil's Advocate'?</strong><span class="fragment highlight-blue" style="display: block; margin-top: -10px; height: 2px;"></span></div>
+                            <div class="fragment" style="border: 1px solid; padding: 10px; border-radius: 8px; width: 40%;">📊 <strong>Andalkan Data & Struktur!</strong><span class="fragment highlight-red" style="display: block; margin-top: -10px; height: 2px;"></span></div>
+                        </div>
+
+                        <aside class="notes">
+                            Ngelawan bias itu nggak gampang, tapi bisa dilatih!
+                            Mulai dari [Sadar Diri]. Akui aja kita semua punya potensi bias.
+                            Terus biasain [Tantang Asumsi & Cari Bukti Lawan]. Jangan cuma cari pembenaran.
+                            Penting banget [Diskusi Terbuka]. Dengerin pendapat beda, cari perspektif lain.
+                            Kalau perlu [Devil's Advocate]. Ada satu orang yg tugasnya 'nyerang' ide kita biar teruji.
+                            Dan yang paling kuat [Data & Struktur]. Kalau ada data objektif dan proses yg jelas (kayak decision matrix tadi), bias lebih susah masuk.
+                        </aside>
+                    </section>
+                </section>
+
+                 <!-- Slide 6: CT + Data => Dashboard & MVP -->
+                <section data-background-transition="zoom">
+                    <!-- 6.0 Judul Bagian -->
+                    <section data-background-image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" data-background-opacity="0.4">
+                        <h2>Dari <span class="fragment highlight-red">Data</span> Jadi <span class="fragment highlight-blue">Aksi</span> Cerdas 💡</h2>
+                        <p class="fragment" style="margin-top: 30px;">Menghubungkan Critical Thinking dengan Visualisasi & Solusi Praktis!</p>
+                        <aside class="notes">
+                            Oke, kita udah bahas cara mikir kritis dan jebakannya. Sekarang, gimana kita pakai CT ini bareng senjata andalan anak SI: DATA!
+                            Di bagian ini kita akan lihat gimana CT bantu kita manfaatin data, bikin visualisasi yang 'ngomong', dan ngembangin solusi yang nggak harus nunggu sempurna tapi udah ngebantu (MVP).
+                            Yuk kita mulai koneksinya... [Panah bawah]
+                        </aside>
+                    </section>
+
+                    <!-- 6.1 CT + Data = DDDM (REVISI ANIMASI & IKON - Stage 1) -->
+                    <section data-auto-animate>
+                         <!-- Initial State -->
+                         <p style="font-size: 1.5em;">Mikir Kritis butuh...</p>
+                         <h2 data-id="title-dddm" style="margin-top: 20px;">BUKTI KUAT! <span class="fragment">(Bukan Feeling)</span></h2>
+                         <!-- Elements below will appear/change in the next stage -->
+                         <p data-id="text-dddm" style="margin-top: 50px; opacity: 0;">...</p>
+
+                         <aside class="notes">
+                            Ingat elemen Accuracy dan Logic? Mikir kritis yang bener itu nggak ngawang. Butuh dasar, butuh bukti. Di kerjaan kita, bukti itu sering banget berupa DATA.
+                            Jadi, jangan ambil keputusan cuma berdasarkan 'kayaknya' atau 'biasanya'. Pakai data! Ini fondasi dari... [Next]
+                         </aside>
+                    </section>
+
+                    <!-- Slide vertikal lanjutan untuk DDDM (REVISI ANIMASI & IKON - Stage 2) -->
+                     <section data-auto-animate>
+                         <!-- Final State -->
+                         <p style="font-size: 1.5em;">Mikir Kritis <span class="fragment highlight-red">+</span> Data Akurat <span class="fragment highlight-red">=</span></p>
+                         <h2 data-id="title-dddm" style="margin-top: 20px;">Data-Driven <br> Decision Making (DDDM)! 🚀</h2>
+                         <p data-id="text-dddm" style="margin-top: 50px; opacity: 1; font-size: 0.8em;">Keputusan lebih <span class="fragment highlight-blue">objektif</span>, <span class="fragment highlight-green">terukur</span>, dan <span class="fragment highlight-red">bisa dipertanggungjawabkan</span>.</p>
+                         <aside class="notes">
+                            ...Data-Driven Decision Making! Artinya, keputusan kita didasarkan pada analisis data, bukan sekadar asumsi atau tekanan.
+                            Dengan DDDM, keputusan kita jadi lebih objektif, terukur, dan bisa dipertanggungjawabkan. Ini penting banget buat kerjaan SI yang seringkali dampaknya besar.
+                         </aside>
+                    </section>
+
+                    <!-- 6.2 Dashboard Cerdas (REVISI IKON & GAMBAR) -->
+                    <section>
+                        <!-- Ganti ikon Dashboard -->
+                        <h3><img src="https://img.icons8.com/fluency/48/000000/dashboard-layout.png" alt="Dashboard" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Gimana Biar Data 'Ngomong'? ➔ <span class="fragment highlight-blue">Dashboard!</span></h3>
+                        <p class="fragment">Ubah data mentah (Sheet pusing!) jadi <span class="fragment highlight-green">cerita visual</span> yang gampang dicerna.</p>
+
+                        <div style="display: flex; justify-content: space-around; align-items: flex-start; margin-top: 30px;">
+                            <div style="width: 45%; text-align: center;">
+                                <h4 class="fragment">Manfaat Utama:</h4>
+                                <ul style="font-size: 0.8em; list-style-type: '✅ '; text-align: left; padding-left: 20px;">
+                                    <li class="fragment">Monitoring Cepat</li>
+                                    <li class="fragment">Identifikasi Pola/Masalah</li>
+                                    <li class="fragment">Komunikasi Insight</li>
+                                     <li class="fragment"><strong style="color: blue;">Bantu Eksplorasi & Refleksi!</strong></li>
+                                </ul>
+                            </div>
+                             <div style="width: 45%; text-align: center;">
+                                <h4 class="fragment">Tips Kritis:</h4>
+                                 <ul style="font-size: 0.8em; list-style-type: '💡 '; text-align: left; padding-left: 20px;">
+                                     <li class="fragment">Pilih Metrik Tepat (Relevance!)</li>
+                                     <li class="fragment">Visual Jelas (Clarity!)</li>
+                                     <li class="fragment">Konteks Penting!</li>
+                                     <li class="fragment"><strong style="color: red;">Jangan cuma 'Cantik'!</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- GANTI PLACEHOLDER INI DENGAN SCREENSHOT DASHBOARDMU (jika ada) -->
+                        <img src="images/dashboard_outsco.png" alt="Contoh Dashboard Simpel" class="fragment" style="margin-top: 20px; border: 1px solid #ccc; max-width: 60%; height: auto;"> <!-- Sesuaikan path & style -->
+
+                        <aside class="notes">
+                            Nah, data udah ada, keputusannya mau data-driven. Terus gimana cara paling efektif buat 'ngeliat' data itu? Salah satunya lewat Dashboard!
+                            Ini cara kita 'menerjemahkan' angka-angka jadi cerita visual.
+                            Manfaatnya banyak [Jelaskan Manfaat]. Terutama poin terakhir, dashboard yang bagus itu ngajak kita buat eksplorasi lebih jauh.
+                            Tapi hati-hati [Jelaskan Tips Kritis]. Jangan asal bikin grafik warna-warni. Pilih metrik yang beneran penting, visualnya harus jelas, kasih konteks, dan yang paling penting: dashboard itu alat bantu mikir, bukan cuma pajangan!
+                        </aside>
+                    </section>
+
+                    <!-- 6.3 MVP Mindset is KEY! (REVISI IKON & TEKS) -->
+                    <section data-auto-animate>
+                        <!-- Replace emoji with img -->
+                        <h2 class="r-fit-text fragment highlight-red">
+                            <img src="https://img.icons8.com/fluency/48/000000/key.png" alt="Key" style="vertical-align: middle; margin-right: 10px; height: 48px;"/>
+                            MVP Mindset is <span data-id="mvp-key">KEY!</span>
+                        </h2>
+                        <!-- Replace text and add styling -->
+                        <p data-id="mvp-desc" class="fragment highlight-blue" style="font-size: 1.1em; font-weight: bold; margin-top: 20px;">
+                            Mulai Kecil ➔ Cepat Rilis ➔ Belajar ➔ Ulangi!
+                        </p>
+                        <div data-id="outsco-story" style="margin-top: 40px; opacity: 0;"></div> <!-- Keep this div for animation -->
+
+                        <aside class="notes">
+                            Ini mindset penting banget pas kita bikin sesuatu, entah sistem, fitur, atau dashboard. MVP!
+                            Artinya, jangan nunggu semuanya sempurna baru launching. Fokus ke fitur paling inti yang bisa nyelesaiin masalah utama PENGGUNA dulu. Bikin versi minimalnya, rilis, dapet feedback, baru kembangin lagi (iterasi).
+                            [Tunjuk teks inti] Mulai kecil, rilis cepat, dapet feedback, perbaiki, ulang.
+                            Kenapa? Biar cepet kasih value, nggak stuck, dan sesuai kebutuhan nyata. Ini juga bagian dari Cognitive Agility, bisa adaptasi cepat.
+                            Contohnya... [Next]
+                        </aside>
+                    </section>
+
+                    <!-- Slide Vertikal Lanjutan Cerita Outsco -->
+                    <section data-auto-animate>
+                        <h2 class="r-fit-text fragment highlight-red">MVP Mindset is <span data-id="mvp-key">Praktik!</span> ✨</h2>
+                        <p data-id="mvp-desc" class="fragment">Minimum Viable Product: <br> "Nggak Harus Sempurna, Yang Penting Solusi Inti Jalan Dulu!"</p>
+                        <div data-id="outsco-story" style="margin-top: 30px; opacity: 1; font-size: 0.8em; border: 1px solid #ccc; padding: 15px; border-radius: 8px;">
+                            <h4>Contoh Kasus: Sistem Prestasi IPB Outsco</h4>
+                            <p><strong>Problem:</strong> Data prestasi kepisah, report manual, monitoring susah.</p>
+                            <p><strong>Need Inti:</strong> Input Gampang + Monitoring Simpel + Report Cepat.</p>
+                            <div class="fragment" style="display: flex; justify-content: space-around; text-align: center; margin-top: 15px;">
+                                <div>📝<br>Input: GForm</div> <span>➔</span>
+                                <div>🔄<br>Proses: GSheet (Formula IF!)</div> <span>➔</span>
+                                <div>📊<br>Monitor: Streamlit</div> <span>➔</span>
+                                <div>📄<br>Report: Excel (Python)</div>
+                            </div>
+                            <p class="fragment" style="margin-top: 15px;"><strong>Hasil MVP:</strong> Masalah inti <span class="fragment highlight-green">teratasi cepat</span> pakai tools familiar & <span class="fragment highlight-blue">1 orang</span> (hehe!). Bisa langsung dipakai!</p>
+                        </div>
+
+                         <aside class="notes">
+                            Contoh nyata dari Outsco [Jelaskan alur singkat GForm -> GSheet -> Streamlit -> Excel].
+                            Nggak perlu nunggu sistem super canggih, yang penting masalah inti PJK & Ditmawa teratasi dulu.
+                            Ini contoh MVP yang berhasil. Kita bisa rilis cepat, dapat feedback, baru iterasi lagi kalau perlu.
+                         </aside>
+                    </section>
+
+                    <!-- 6.4 Bonus - CT untuk Pencegahan (REVISI IKON & TEKS) -->
+                    <section>
+                        <!-- Ganti ikon Shield ke Prevention -->
+                        <h3><img src="https://img.icons8.com/?size=100&id=NMd70eLHldf9&format=png&color=000000" alt="Prevention" style="vertical-align: middle; margin-right: 10px; height: 48px;"/> Bonus: Mikir Kritis Buat <span class="fragment highlight-green">Jaga-Jaga!</span></h3>
+                        <p class="fragment">CT nggak cuma buat 'nyembuhin', tapi juga bisa buat <span class="fragment highlight-blue">mencegah</span> masalah data!</p>
+                        <p class="fragment">Caranya? Pikirin <span class="fragment highlight-red">Risiko</span> di Awal (Mini Risk Management).</p>
+
+                         <!-- Visualisasi Poin Pencegahan -->
+                        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px; font-size: 0.8em; text-align: center;">
+                             <div class="fragment" style="border: 1px solid; padding: 10px; border-radius: 8px; width: 40%;">📁 Aturan Nama File Jelas (Clarity)</div>
+                             <div class="fragment" style="border: 1px solid; padding: 10px; border-radius: 8px; width: 40%;">✅ Validasi Input GForm (Accuracy)</div>
+                             <div class="fragment" style="border: 1px solid; padding: 10px; border-radius: 8px; width: 40%;">👤 PIC Data Jelas (Accountability)</div>
+                             <div class="fragment highlight-red" style="border: 2px solid red; padding: 10px; border-radius: 8px; width: 40%;">📜 Prinsip Data Governance!</div>
+                        </div>
+
+                        <aside class="notes">
+                            Bonus terakhir sebelum praktik! CT juga bisa buat pencegahan. Daripada nunggu data amburadul baru dibenerin, mending kita antisipasi.
+                            Pikirin risikonya apa aja. Terus bikin aturan main simpel.
+                            Contohnya [Jelaskan poin 1-3]. Hal-hal kecil kayak gini ngaruh banget buat jaga kualitas data.
+                            Ini semua bagian dari Data Governance. Aturan main data yang jelas itu penting di institusi kayak IPB. Ini juga nyambung ke Systems Thinking, liat dampak jangka panjang.
+                        </aside>
+                    </section>
+                </section>
+
+                 <!-- Slide 7: Recap & Next Step -->
+                <section data-transition="fade">
+                    <!-- 7.0 Judul Bagian (REVISI IKON) -->
+                    <section>
+                        <!-- Icon updated based on feedback -->
+                        <h2>Wrapping Up & <span class="fragment highlight-blue">Siap Praktik!</span> 🚀</h2>
+                        <p class="fragment">Kita rangkum poin penting & langsung coba!</p>
+                        <aside class="notes">
+                            Wah, nggak kerasa ya udah hampir sejam kita ngobrolin soal mikir kritis ini. Semoga banyak insight baru ya!
+                            Sebelum kita benar-benar selesai sesi teori dan masuk ke praktik (bikin dashboard simpel!), yuk kita rangkum dulu poin-poin kuncinya biar makin nempel. [Panah bawah]
+                        </aside>
+                    </section>
+
+                    <!-- 7.1 Recap Poin Kunci (REVISI IKON) -->
+                    <section>
+                        <!-- Icon updated based on feedback -->
+                         <h3>Takeaways Utama 📝:</h3>
+                         <ul style="list-style-type: '✅ '; margin-top: 30px; font-size: 0.85em;">
+                            <li class="fragment fade-down"><strong>Beyond Basic CT:</strong> Perlu juga <span class="fragment highlight-blue">Agility</span> & <span class="fragment highlight-green">Systems Thinking</span>.</li>
+                            <li class="fragment fade-down"><strong>Refleksi itu Wajib:</strong> Belajar dari pengalaman (sukses/gagal).</li>
+                            <li class="fragment fade-down"><strong>Mikir Dulu, Baru AI:</strong> Kita 'nahkoda'-nya, AI 'asisten'.</li>
+                            <li class="fragment fade-down"><strong>Lawan Bias Pikiran:</strong> Sadari, tantang, pakai data & struktur.</li>
+                            <li class="fragment fade-down"><strong>Data & Dashboard = Partner Mikir:</strong> Visualisasi untuk insight.</li>
+                            <li class="fragment fade-down"><strong>MVP Mindset:</strong> Solusi inti dulu, cepat kasih value!</li>
+                        </ul>
+                        <p class="fragment" style="margin-top: 40px; font-weight: bold; font-style: italic;">
+                            Ingat: Ini semua <span class="fragment highlight-red">Skill yang Dilatih</span>, bukan bakat! 💪
+                        </p>
+                    <aside class="notes">
+                        Jadi ini rangkuman singkatnya:
+                        [Poin 1] CT itu penting biar nggak cuma 'kebakaran jenggot', tapi bisa reflektif & lihat sistem.
+                        [Poin 2] Ada 5 elemen dasar (CAR-DL) biar mikir kita runut.
+                        [Poin 3] Ada tools (5 Whys, Matrix, Mapping) yang bisa bantu kita.
+                        [Poin 4] AI itu teman, tapi kita yang pegang kendali & validasi.
+                        [Poin 5] Hati-hati sama bias pikiran kita sendiri (Konfirmasi, Jumping, Groupthink).
+                        [Poin 6] Gabungin CT sama data buat keputusan & aksi cerdas (DDDM, Dashboard, MVP).
+                        Dan yang paling penting [Tunjuk teks bawah], CT itu skill, harus diasah terus-menerus. Nggak bisa instan.
+                        Oke, siap buat coba praktik? [Panah bawah]
+                    </aside>
+                    </section>
+
+                    <!-- 7.2 Pengantar Praktik (REVISI IKON & TEKS) -->
+                    <section>
+                        <h3>Saatnya <span class="fragment highlight-blue">Praktik!</span> 👨‍💻👩‍💻</h3>
+                        <p class="fragment">Kita akan coba bikin <span class="fragment highlight-green">MVP Dashboard</span> sederhana untuk:</p>
+                        <p class="fragment" style="font-weight: bold; margin-top: 20px;">"Monitoring Progres Penilaian Tugas Maba oleh PJK"</p>
+                        <!-- Icon reverted based on latest feedback -->
+                         <img src="https://img.icons8.com/fluency/96/000000/database-administrator.png" alt="Dataset" class="fragment grow" style="margin-top: 20px;"/>
+                         <p class="fragment" style="font-size: 0.8em;">Dataset: `dataset_exercise.xlsx` (Link udah dikasih kan ya?)</p>
+                        <p class="fragment" style="font-size: 0.8em;">Tools: <span class="fragment highlight-red">BEBAS!</span> (Excel, GSheet, Python, Looker, dll.)</p>
+                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHFnOGZ6aGs1OG55bTdncGNqcjRwOHBhcW54MTdxMTkzMmN0dDAzOSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/BpGWitbFZflfSUYuZ9/giphy.gif" alt="Let's Do This" width="250px" class="fragment" style="margin-top: 20px;">
+                        <p class="fragment" style="margin-top: 20px;">Siap ngulik bareng?</p>
+
+                        <aside class="notes">
+                            Oke, teori udah, saatnya tangan sedikit 'kotor'!
+                            Kita akan coba aplikasikan sedikit ilmunya buat bikin dashboard MVP. Kasusnya ini ya [Sebutkan kasus]. Tujuannya biar kita bisa pantau progres penilaian dari PJK.
+                            Datanya pakai `dataset_exercise.xlsx`, link-nya harusnya udah dikasih sama panitia ya?
+                            Nah, tools-nya bebas banget! Mau pakai Excel, Google Sheet, Python (Streamlit/Dash), Looker Studio, Tableau, Power BI, senyamannya teman-teman aja. Yang penting kita coba terapin cara mikirnya: 'Dashboard ini mau jawab pertanyaan apa?', 'Info apa yang paling penting ditampilin duluan (MVP)?'.
+                            Aku juga udah siapin contoh dashboard versiku nanti buat referensi.
+                            Oke, semangat ya! Silakan buka datanya dan tools-nya masing-masing. Kita mulai sesi praktiknya. [Mulai Praktik]
+                        </aside>
+                    </section>
+                </section>
+
+            </div>
+        </div>
+
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script src="plugin/markdown/markdown.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+        <script>
+            // More info about initialization & config:
+            // - https://revealjs.com/initialization/
+            // - https://revealjs.com/config/
+            Reveal.initialize({
+                // === Pengaturan Dasar & Navigasi ===
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+                hash: true,
+                slideNumber: 'c/t',
+				width: 1920,
+  				height: 1080,
+  				margin: 0.05,
+				
+                // === Transisi Default ===
+                transition: 'slide',
+                backgroundTransition: 'fade',
+
+                // === Plugin yang Kita Pakai ===
+                // plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ] // Original line
+                plugins: [ /* RevealMarkdown, RevealHighlight, */ RevealNotes ] // Sesuaikan plugin yg aktif (Markdown & Highlight dinonaktifkan jika tidak dipakai)
+            });
+        </script>
+    </body>
+</html>
