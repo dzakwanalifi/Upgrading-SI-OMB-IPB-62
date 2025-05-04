@@ -1,273 +1,257 @@
-import streamlit as st
 import pandas as pd
-import plotly.express as px
 import numpy as np
-from datetime import datetime
+import random
+from faker import Faker # Untuk generate nama realistis (install: pip install Faker)
+import math # Untuk floor/ceil jika diperlukan, tapi // dan % cukup
 
-#===============================================================================
-# Konfigurasi Halaman Streamlit
-#===============================================================================
-st.set_page_config(
-    page_title="Dashboard Monitoring Penilaian PJK",
-    page_icon="📊",
-    layout="wide"
-)
+# --- Konfigurasi ---
+JUMLAH_DATA_DUMMY = 2000
+NAMA_FILE_DUMMY = 'data_mahasiswa_dummy.xlsx'
+NAMA_FILE_OUTPUT = 'hasil_pembagian_kelompok_rata.xlsx' # Nama file output diubah
+JUMLAH_KB = 5
+JUMLAH_KS = 25 # Jumlah Kelompok Sedang per Kelompok Besar
 
-#===============================================================================
-# Mapping NIM ke Fakultas (Sama seperti V4)
-#===============================================================================
-faculty_mapping = {
-    'A': 'Pertanian (Faperta)', 'B': 'Kedokteran Hewan (SKHB)',
-    'C': 'Perikanan & Kelautan (FPIK)', 'D': 'Peternakan (Fapet)',
-    'E': 'Kehutanan & Lingkungan (Fahutan)', 'F': 'Teknologi Pertanian (Fateta)',
-    'G': 'Matematika & IPA (FMIPA)', 'H': 'Ekonomi & Manajemen (FEM)',
-    'I': 'Ekologi Manusia (Fema)', 'K': 'Bisnis (SB)',
-    'L': 'Kedokteran (FK)', 'M': 'Statistika & Sains Data (SMI)'
-}
-def get_faculty_from_nim(nim):
-    if pd.isna(nim) or not isinstance(nim, str) or len(nim) == 0: return "Fakultas Tidak Diketahui"
-    return faculty_mapping.get(nim[0].upper(), f"Kode '{nim[0].upper()}' Tdk Dikenal")
+# Kolom yang akan dibuat & digunakan
+KOLOM_NIM = 'nim'
+KOLOM_NAMA = 'nama'
+KOLOM_FAKULTAS = 'fakultas'
+KOLOM_JALUR = 'jalur masuk'
+KOLOM_JK = 'jenis kelamin'
+KOLOM_KB_OUTPUT = 'kelompok_besar'
+KOLOM_KS_OUTPUT = 'kelompok_sedang'
 
-#===============================================================================
-# Fungsi Load & Proses Data (Sama seperti V4 - tanpa st.status internal)
-#===============================================================================
-@st.cache_data(ttl=600)
-def load_data_from_gsheet(sheet_id="1S2JUKzK116B7NKL9XyX5Cdd1nwXK9knW"):
-    # ... (Kode fungsi load_data_from_gsheet sama persis seperti V4.1) ...
-    sheet_name_nilai = "nilai_maba"; sheet_name_pjk = "pjk"
-    url_nilai = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name_nilai}"
-    url_pjk = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name_pjk}"
-    load_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+# --- Bagian 1: Pembuatan Data Dummy (Sama seperti sebelumnya) ---
+def buat_data_dummy(jumlah_data):
+    fake = Faker('id_ID')
+    data = []
+    list_fakultas = ['Teknik', 'MIPA', 'Ekonomi', 'Hukum', 'Kedokteran', 'Ilmu Budaya', 'ISIPOL']
+    bobot_fakultas = [0.25, 0.2, 0.18, 0.12, 0.1, 0.08, 0.07]
+    list_jalur = ['SNMPTN', 'SBMPTN', 'Mandiri', 'Afirmasi']
+    bobot_jalur = [0.35, 0.40, 0.20, 0.05]
+    list_jk = ['Laki-laki', 'Perempuan']
+    bobot_jk = [0.55, 0.45]
+    print(f"Membuat {jumlah_data} data dummy...")
+    for i in range(jumlah_data):
+        nim = f"MHS{i+1:04d}"
+        nama = fake.name()
+        fakultas = random.choices(list_fakultas, weights=bobot_fakultas, k=1)[0]
+        jalur = random.choices(list_jalur, weights=bobot_jalur, k=1)[0]
+        jk = random.choices(list_jk, weights=bobot_jk, k=1)[0]
+        data.append({KOLOM_NIM: nim, KOLOM_NAMA: nama, KOLOM_FAKULTAS: fakultas, KOLOM_JALUR: jalur, KOLOM_JK: jk})
+    df_dummy = pd.DataFrame(data)
+    print("Data dummy selesai dibuat.")
     try:
-        df_nilai = pd.read_csv(url_nilai, dtype={'NIM': str, 'IdKelompok': str})
-        try: df_pjk = pd.read_csv(url_pjk, dtype={'KelompokId': str, 'NIM': str})
-        except ValueError: df_pjk = pd.read_csv(url_pjk, dtype={'KelompokId': str})
+        df_dummy.to_excel(NAMA_FILE_DUMMY, index=False)
+        print(f"Data dummy disimpan ke {NAMA_FILE_DUMMY}")
+    except Exception as e:
+        print(f"Gagal menyimpan data dummy: {e}")
+    return df_dummy
 
-        grade_columns_all = [col for col in df_nilai.columns if '-' in col and col[0] in 'ABCDE' and col[1:].replace('-', '').isdigit()]
-        if not grade_columns_all: st.warning("Kolom nilai tdk terdeteksi."); return None, None, None
-        for col in grade_columns_all:
-            if df_nilai[col].dtype == 'object':
-                df_nilai[col] = df_nilai[col].astype(str).str.strip().str.replace(',', '.'); df_nilai[col] = pd.to_numeric(df_nilai[col], errors='coerce')
-            else: df_nilai[col] = df_nilai[col].astype(float)
+# --- Bagian 2: Kode Inti Pembagian Kelompok (MODIFIKASI LOGIKA ASSIGNMENT) ---
+def bagi_kelompok_rata(df_input, jumlah_kb, jumlah_ks):
+    """Membagi mahasiswa ke Kelompok Besar dan Sedang dengan ukuran lebih merata."""
+    df = df_input.copy()
+    df[KOLOM_KB_OUTPUT] = pd.NA
+    df[KOLOM_KS_OUTPUT] = pd.NA
+    print("Memulai proses pembagian kelompok (metode rata)...")
 
-        if 'KelompokId' not in df_pjk.columns or 'IdKelompok' not in df_nilai.columns: st.error("Kolom join tdk ditemukan."); return None, None, None
-        if 'UNITPJK' not in df_pjk.columns: df_pjk['UNITPJK'] = 'Unit Tdk Diketahui'; st.warning("Kolom UNITPJK tdk ada.")
-        if 'NAMAKELBESAR' not in df_pjk.columns: df_pjk['NAMAKELBESAR'] = df_pjk['UNITPJK']
+    # Fungsi helper untuk assign kelompok secara merata
+    def assign_merata(indices, num_groups, column_name):
+        num_items = len(indices)
+        if num_items == 0:
+            return # Tidak ada yang perlu diassign
 
-        df_merged = pd.merge(df_nilai, df_pjk.drop(columns=['NIM'], errors='ignore'), left_on='IdKelompok', right_on='KelompokId', how='left')
-        df_merged['UNITPJK'].fillna('Tanpa Unit PJK', inplace=True); df_merged['NAMAKELBESAR'].fillna('Tanpa Kelompok Besar', inplace=True)
-        df_merged.drop(columns=['KelompokId'], errors='ignore', inplace=True)
+        # 1. Acak urutan item (mahasiswa) dalam stratum ini
+        indices_acak = np.random.permutation(indices)
 
-        if 'NIM' in df_merged.columns: df_merged['Fakultas'] = df_merged['NIM'].apply(get_faculty_from_nim)
-        else: st.warning("Kolom NIM tdk ada."); df_merged['Fakultas'] = "Tdk Diketahui"
+        # 2. Hitung ukuran target per kelompok
+        base_size = num_items // num_groups
+        remainder = num_items % num_groups
+        # Buat daftar ukuran kelompok (beberapa akan +1 jika ada sisa)
+        target_sizes = [base_size + 1] * remainder + [base_size] * (num_groups - remainder)
 
-        valid_grade_cols = [col for col in grade_columns_all if col in df_merged.columns]
-        df_merged['total_possible_grades_all'] = len(valid_grade_cols)
-        mask_maba = df_merged['NIM'].notna()
-        if valid_grade_cols: df_merged.loc[mask_maba, 'graded_count'] = df_merged.loc[mask_maba, valid_grade_cols].notna().sum(axis=1); df_merged['graded_count'].fillna(0, inplace=True)
-        else: df_merged['graded_count'] = 0
+        # 3. Acak urutan kelompok mana yg dapat ukuran lebih besar
+        random.shuffle(target_sizes)
 
-        return df_merged, grade_columns_all, load_timestamp
-    except Exception as e: st.error(f"Error load data: {e}"); return None, None, None
+        # 4. Assign berdasarkan ukuran target yang sudah diacak
+        current_start_index = 0
+        # Iterasi sesuai jumlah kelompok (1-based index untuk group_num)
+        for group_num_idx, size in enumerate(target_sizes):
+            group_num = group_num_idx + 1 # Nomor kelompok (1, 2, 3, ...)
+            # Ambil slice dari mahasiswa yang sudah diacak
+            indices_for_this_group = indices_acak[current_start_index : current_start_index + size]
+            # Assign nomor kelompok ke DataFrame utama
+            df.loc[indices_for_this_group, column_name] = group_num
+            # Update index awal untuk slice berikutnya
+            current_start_index += size
 
-#===============================================================================
-# Fungsi Kalkulasi Tingkat Penyelesaian (Sama seperti V4)
-#===============================================================================
-def calculate_completion_rate(df, group_by_col=None, columns_to_consider=None):
-    # ... (kode fungsi ini tidak berubah) ...
-    if df is None or df.empty: return pd.DataFrame() if group_by_col else 0.0
-    if columns_to_consider is None: columns_to_consider = [col for col in df.columns if '-' in col and col[0] in 'ABCDE' and col[1:].replace('-', '').isdigit()]
-    actual_cols_to_consider = [col for col in columns_to_consider if col in df.columns]
-    if not actual_cols_to_consider: return pd.DataFrame() if group_by_col else 0.0
+    # Tahap 1: Pembagian Kelompok Besar (KB) berdasarkan Fakultas
+    print("Tahap 1: Membagi Kelompok Besar berdasarkan proporsi Fakultas...")
+    fakultas_unik = df[KOLOM_FAKULTAS].unique()
+    for fakultas in fakultas_unik:
+        mask_fakultas = df[KOLOM_FAKULTAS] == fakultas
+        indices_fakultas = df.loc[mask_fakultas].index
+        # Gunakan fungsi helper untuk assign KB
+        assign_merata(indices_fakultas, jumlah_kb, KOLOM_KB_OUTPUT)
+    print("Pembagian Kelompok Besar selesai.")
 
-    mask_maba = df['NIM'].notna()
-    df_temp = df.copy()
-    df_temp['graded_count_filtered'] = np.nan
-    df_temp.loc[mask_maba, 'graded_count_filtered'] = df_temp.loc[mask_maba, actual_cols_to_consider].notna().sum(axis=1)
-    df_temp['total_possible_filtered'] = len(actual_cols_to_consider)
-    df_temp.loc[~mask_maba, 'total_possible_filtered'] = 0
+    # Tahap 2: Pembagian Kelompok Sedang (KS) di dalam Setiap KB
+    print("Tahap 2: Membagi Kelompok Sedang di dalam setiap Kelompok Besar...")
+    for kb_id in range(1, jumlah_kb + 1):
+        df_kb = df[df[KOLOM_KB_OUTPUT] == kb_id]
+        if df_kb.empty: continue
 
-    if group_by_col:
-        if group_by_col not in df_temp.columns: return pd.DataFrame()
-        df_filtered_group = df_temp.dropna(subset=[group_by_col])
-        if df_filtered_group.empty: return pd.DataFrame()
-        agg_data = df_filtered_group.groupby(group_by_col).agg(total_graded=('graded_count_filtered', 'sum'), total_possible=('total_possible_filtered', 'sum')).reset_index()
-        agg_data['completion_rate'] = np.where(agg_data['total_possible'] > 0, (agg_data['total_graded'] / agg_data['total_possible']) * 100, 0.0)
-        return agg_data.round(2)
+        strata_ks = df_kb.groupby([KOLOM_JK, KOLOM_JALUR])
+        for (jk, jalur), group in strata_ks:
+            indices_stratum = group.index
+            # Gunakan fungsi helper untuk assign KS
+            assign_merata(indices_stratum, jumlah_ks, KOLOM_KS_OUTPUT)
+    print("Pembagian Kelompok Sedang selesai.")
+
+    df[KOLOM_KB_OUTPUT] = df[KOLOM_KB_OUTPUT].astype('Int64')
+    df[KOLOM_KS_OUTPUT] = df[KOLOM_KS_OUTPUT].astype('Int64')
+    return df
+
+# --- Bagian 3: Kode Eksekusi & Verifikasi Proporsi (TAMBAH CEK STD DEV) ---
+def cek_proporsi_dan_std(df_asli, df_hasil, jumlah_kb, jumlah_ks):
+    """Mencetak perbandingan proporsi dan standar deviasi ukuran kelompok."""
+    print("\n--- Verifikasi Proporsi & Ukuran Kelompok ---")
+
+    # 1. Verifikasi Kelompok Besar (KB)
+    print("\n1. Verifikasi Kelompok Besar (KB)")
+    # Proporsi Fakultas
+    proporsi_fakultas_global = df_asli[KOLOM_FAKULTAS].value_counts(normalize=True).sort_index()
+    print("   - Proporsi Fakultas Global (Target):")
+    print(proporsi_fakultas_global.apply(lambda x: f"     {x:.2%}").to_string())
+
+    all_kb_faculty_proportions_match = True
+    kb_sizes = [] # Untuk simpan ukuran tiap KB
+    for kb_id in range(1, jumlah_kb + 1):
+        df_kb = df_hasil[df_hasil[KOLOM_KB_OUTPUT] == kb_id]
+        kb_sizes.append(len(df_kb))
+        proporsi_kb = df_kb[KOLOM_FAKULTAS].value_counts(normalize=True).sort_index()
+        print(f"\n   - KB {kb_id} (Total: {len(df_kb)}):")
+        print(proporsi_kb.apply(lambda x: f"     {x:.2%}").to_string())
+        if not proporsi_kb.round(2).equals(proporsi_fakultas_global.round(2)):
+             all_kb_faculty_proportions_match = False
+             print(f"     *Peringatan: Proporsi fakultas KB {kb_id} sedikit berbeda dari target global.*")
+
+    if all_kb_faculty_proportions_match:
+         print("\n   ==> Distribusi Fakultas antar Kelompok Besar terlihat seimbang.")
     else:
-        total_graded = df_temp['graded_count_filtered'].sum(); total_possible = df_temp['total_possible_filtered'].sum()
-        return ((total_graded / total_possible) * 100).round(2) if total_possible > 0 else 0.0
+         print("\n   ==> Perhatian: Ada sedikit perbedaan proporsi fakultas antar Kelompok Besar (wajar karena pembagian).")
 
-#===============================================================================
-# Load Data (dengan st.spinner)
-#===============================================================================
-google_sheet_id = "1S2JUKzK116B7NKL9XyX5Cdd1nwXK9knW"
-df_data = None; all_grade_cols = None; data_timestamp = "N/A"
-with st.spinner("Memuat data dari Google Sheets... ⏳"):
-    df_data, all_grade_cols, data_timestamp = load_data_from_gsheet(google_sheet_id)
-if df_data is not None and not df_data.empty: st.toast("Data berhasil dimuat!", icon="✅")
-
-#===============================================================================
-# Mulai Layout Dashboard
-#===============================================================================
-st.title("📊 Dashboard Monitoring Progres Penilaian PJK")
-
-# Hanya tampilkan dashboard jika data berhasil dimuat
-if df_data is not None and not df_data.empty and all_grade_cols:
-
-    # --- Baris 0: KPI Overall & Info Data ---
-    with st.container(border=True):
-        col_kpi_all, col_info = st.columns([1, 3])
-        with col_kpi_all:
-            overall_completion_all_units = calculate_completion_rate(df_data, columns_to_consider=all_grade_cols) # Hitung progres semua kategori
-            st.metric(label="🏁 Avg. Penyelesaian Keseluruhan", value=f"{overall_completion_all_units:.1f}%",
-                      help="Rata-rata penyelesaian semua tugas di semua unit.")
-        with col_info:
-            st.caption(f"**Definisi Penyelesaian (%):** Persentase entri nilai yang sudah terisi angka (bukan '-' atau blank) dari total tugas yang dipilih per mahasiswa.")
-            st.caption(f"Data terakhir dimuat: **{data_timestamp}**")
-            st.badge("Enhanced MVP v5")
-
-    st.divider()
-
-    # --- Baris 1: Filter ---
-    st.markdown("##### 🔍 **Filter Tampilan Data**")
-    filter_cols = st.columns(4)
-    with filter_cols[0]:
-        unit_list = ['Semua Unit'] + sorted(df_data['UNITPJK'].dropna().unique().tolist())
-        selected_unit = st.selectbox("🏢 Unit PJK:", unit_list, key='select_unit')
-    with filter_cols[1]:
-        tahap_list = ['Semua Tahap'] + sorted(df_data['Tahap'].dropna().unique().tolist())
-        selected_tahap = st.selectbox("🗓️ Tahap:", tahap_list, key='select_tahap')
-    with filter_cols[2]:
-        fakultas_list = ['Semua Fakultas'] + sorted(df_data['Fakultas'].dropna().unique().tolist())
-        selected_fakultas = st.selectbox("🏫 Fakultas Maba:", fakultas_list, key='select_fakultas')
-    with filter_cols[3]:
-        kategori_options = ['A', 'B', 'C', 'D', 'E']
-        selected_kategori = st.multiselect("📑 Kategori Tugas:", kategori_options, default=kategori_options, key='select_kategori')
-        if not selected_kategori: selected_kategori = kategori_options; st.warning("Pilih min. 1 kategori.")
-
-    # --- Proses Filtering Data Utama ---
-    filtered_data = df_data.copy()
-    if selected_tahap != 'Semua Tahap': filtered_data = filtered_data[filtered_data['Tahap'] == selected_tahap]
-    if selected_fakultas != 'Semua Fakultas': filtered_data = filtered_data[filtered_data['Fakultas'] == selected_fakultas]
-    grade_cols_to_consider = [col for col in all_grade_cols if col[0] in selected_kategori]
-    data_for_comparison = filtered_data.copy() # Data untuk perbandingan unit
-    unit_title_suffix = " (Semua Unit)"
-    if selected_unit != 'Semua Unit':
-        filtered_data = filtered_data[filtered_data['UNITPJK'] == selected_unit]
-        unit_title_suffix = f" ({selected_unit})"
-
-    # --- Pengecekan Data Setelah Filter ---
-    if filtered_data.empty:
-        st.warning(f"Tidak ada data mahasiswa yang cocok dengan filter.")
+    # Ukuran dan Standar Deviasi KB
+    kb_sizes_series = pd.Series(kb_sizes)
+    print(f"   Ukuran Kelompok Besar: Min={kb_sizes_series.min()}, Max={kb_sizes_series.max()}, Mean={kb_sizes_series.mean():.2f}, StdDev={kb_sizes_series.std():.2f}")
+    if kb_sizes_series.std() < 2: # Contoh batas toleransi std dev
+         print("   ==> Variasi ukuran antar Kelompok Besar sangat kecil (distribusi merata).")
     else:
-        st.divider()
-        #---------------------------------------------------------------------------
-        # Baris 2: KPI Ringkasan Terfilter
-        #---------------------------------------------------------------------------
-        st.markdown(f"### 📈 Ringkasan Progres {unit_title_suffix}")
-        with st.container(border=True):
-            kpi_cols = st.columns(3)
-            with kpi_cols[0]:
-                completion_rate_filtered = calculate_completion_rate(filtered_data, columns_to_consider=grade_cols_to_consider)
-                st.metric(label=f"Avg. Penyelesaian ({','.join(selected_kategori)})", value=f"{completion_rate_filtered:.1f}%")
-            with kpi_cols[1]: maba_count = filtered_data['NIM'].nunique(); st.metric(label="👥 Jml Mahasiswa", value=maba_count)
-            with kpi_cols[2]: group_count = filtered_data['IdKelompok'].nunique(); st.metric(label="🧩 Jml Kelompok Sedang", value=group_count)
-            st.caption(f"Filter aktif: Tahap '{selected_tahap}', Fakultas '{selected_fakultas}'.")
+         print("   ==> Terdapat variasi ukuran antar Kelompok Besar.")
 
-        st.divider()
 
-        #---------------------------------------------------------------------------
-        # Baris 3: Visualisasi Progress Kategori & Detail Kelompok (Hanya jika unit dipilih)
-        #---------------------------------------------------------------------------
-        if selected_unit != 'Semua Unit':
-            st.markdown(f"### 📊 Detail Progres di Unit {selected_unit}")
-            detail_cols = st.columns(2) # Bagi jadi 2 kolom untuk baris ini
+    # 2. Verifikasi Kelompok Sedang (KS) dalam KB
+    print("\n2. Verifikasi Kelompok Sedang (KS) di dalam setiap KB")
+    overall_ks_proportions_ok = True
+    all_ks_std_devs = [] # Kumpulkan std dev ukuran KS dari semua KB
+    for kb_id in range(1, jumlah_kb + 1):
+        print(f"\n   --- Analisis Kelompok Besar {kb_id} ---")
+        df_kb = df_hasil[df_hasil[KOLOM_KB_OUTPUT] == kb_id]
+        if df_kb.empty:
+            print("      KB ini kosong.")
+            continue
 
-            # --- Kolom Kiri: Progress per Kategori Tugas ---
-            with detail_cols[0]:
-                 with st.container(border=True): # Tinggi tidak di-set, biarkan dinamis
-                    st.markdown("**Avg. Penyelesaian per Kategori (%)**")
-                    category_completion_rates = {}
-                    filtered_data_maba_cat = filtered_data.dropna(subset=['NIM'])
-                    if not filtered_data_maba_cat.empty:
-                        for category_prefix in ['A', 'B', 'C', 'D', 'E']:
-                            category_cols = [col for col in grade_cols_to_consider if col.startswith(category_prefix + '-') and col in filtered_data_maba_cat.columns]
-                            if category_cols:
-                                total_graded_category = filtered_data_maba_cat[category_cols].notna().sum().sum()
-                                total_possible_category = len(filtered_data_maba_cat) * len(category_cols)
-                                category_completion_rates[f"{category_prefix}"] = ((total_graded_category / total_possible_category) * 100) if total_possible_category > 0 else 0.0
-                            else: category_completion_rates[f"{category_prefix}"] = 0.0 # Label tanpa "Kategori "
+        # Proporsi target JK & Jalur di dalam KB ini
+        proporsi_jk_kb = df_kb[KOLOM_JK].value_counts(normalize=True).sort_index()
+        proporsi_jalur_kb = df_kb[KOLOM_JALUR].value_counts(normalize=True).sort_index()
+        print(f"      - Target Proporsi JK (di KB {kb_id}):")
+        print(proporsi_jk_kb.apply(lambda x: f"        {x:.2%}").to_string())
+        print(f"      - Target Proporsi Jalur Masuk (di KB {kb_id}):")
+        print(proporsi_jalur_kb.apply(lambda x: f"        {x:.2%}").to_string())
+        print(f"      - Memeriksa proporsi & ukuran di {jumlah_ks} KS dalam KB {kb_id}...")
 
-                        if category_completion_rates:
-                            df_category_rates = pd.DataFrame(list(category_completion_rates.items()), columns=['Kategori', 'Penyelesaian (%)'])
-                            df_category_rates = df_category_rates.sort_values(by='Penyelesaian (%)', ascending=False)
-                            fig_category_progress = px.bar(
-                                df_category_rates, x='Kategori', y='Penyelesaian (%)', text='Penyelesaian (%)',
-                                color='Kategori', color_discrete_sequence=px.colors.qualitative.Set2
-                            )
-                            fig_category_progress.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
-                            fig_category_progress.update_layout(xaxis_title=None, yaxis_title="Penyelesaian (%)", showlegend=False, height=350, margin=dict(l=10, r=10, t=30, b=10)) # Buat lebih pendek
-                            st.plotly_chart(fig_category_progress, use_container_width=True)
-                        else: st.info("Tdk ada data kategori.")
-                    else: st.info("Tdk ada data mhs valid.")
+        ks_proportions_match_in_this_kb = True
+        ks_sizes_in_kb = [] # Ukuran KS khusus di KB ini
+        count_significant_diff = 0
+        for ks_id in range(1, jumlah_ks + 1):
+            df_ks = df_kb[df_kb[KOLOM_KS_OUTPUT] == ks_id]
+            if df_ks.empty: continue # Abaikan KS kosong
+            ks_sizes_in_kb.append(len(df_ks))
 
-            # --- Kolom Kanan: Detail Progress per Kelompok ---
-            with detail_cols[1]:
-                 with st.container(border=True): # Tinggi tidak di-set
-                    st.markdown(f"**Detail Progres per Kelompok Sedang**")
-                    if 'IdKelompok' in filtered_data.columns and filtered_data['IdKelompok'].notna().any():
-                        completion_by_group = calculate_completion_rate(filtered_data, group_by_col='IdKelompok', columns_to_consider=grade_cols_to_consider)
-                        if not completion_by_group.empty:
-                            completion_by_group = completion_by_group.sort_values(by='completion_rate', ascending=True)
-                            completion_by_group.rename(columns={'completion_rate': 'Penyelesaian (%)', 'IdKelompok':'ID Kelompok'}, inplace=True)
+            # Cek proporsi
+            proporsi_jk_ks = df_ks[KOLOM_JK].value_counts(normalize=True).sort_index()
+            proporsi_jalur_ks = df_ks[KOLOM_JALUR].value_counts(normalize=True).sort_index()
+            target_jk_aligned = proporsi_jk_kb.reindex(proporsi_jk_ks.index).fillna(0)
+            target_jalur_aligned = proporsi_jalur_kb.reindex(proporsi_jalur_ks.index).fillna(0)
+            diff_jk = abs(proporsi_jk_ks - target_jk_aligned).max() if not target_jk_aligned.empty else 0
+            diff_jalur = abs(proporsi_jalur_ks - target_jalur_aligned).max() if not target_jalur_aligned.empty else 0
+            TOLERANSI_JK = 0.15
+            TOLERANSI_JALUR = 0.20
+            if diff_jk > TOLERANSI_JK or diff_jalur > TOLERANSI_JALUR:
+                ks_proportions_match_in_this_kb = False
+                overall_ks_proportions_ok = False
+                count_significant_diff += 1
+                if count_significant_diff <= 3:
+                     print(f"      * Peringatan di KS {ks_id} (Total: {len(df_ks)}) - Proporsi berbeda signifikan:")
+                     print(f"         -> JK   : {proporsi_jk_ks.apply(lambda x: f'{x:.1%}').to_dict()}")
+                     print(f"         -> Jalur: {proporsi_jalur_ks.apply(lambda x: f'{x:.1%}').to_dict()}")
+                elif count_significant_diff == 4:
+                     print("      * (Peringatan proporsi serupa di KS lainnya tidak ditampilkan...)")
 
-                            st.dataframe(
-                                completion_by_group[['ID Kelompok', 'Penyelesaian (%)']],
-                                use_container_width=True, height=350, hide_index=True, # Buat lebih pendek
-                                column_config={
-                                    "Penyelesaian (%)": st.column_config.ProgressColumn(format="%.1f%%", min_value=0, max_value=100),
-                                    "ID Kelompok": st.column_config.TextColumn("ID Kelompok")
-                                }
-                            )
-                            with st.expander("Lihat 5 Kelompok Progres Terendah 👇"):
-                                low_progress_groups = completion_by_group.head(5)
-                                st.dataframe(low_progress_groups, use_container_width=True, hide_index=True,
-                                             column_config={ "Penyelesaian (%)": st.column_config.NumberColumn(format="%.2f%%")})
-                        else: st.info(f"Tdk ada data kelompok valid di Unit {selected_unit}.")
-                    else: st.warning("Data ID Kelompok tdk tersedia.")
-        #---------------------------------------------------------------------------
-        # Baris 4: Visualisasi Perbandingan Unit (Selalu Tampil)
-        #---------------------------------------------------------------------------
-        st.divider()
-        st.markdown("### 🏢 Perbandingan Progres Antar Unit PJK")
-        with st.container(border=True):
-             if 'UNITPJK' in data_for_comparison.columns and data_for_comparison['UNITPJK'].notna().any():
-                completion_by_unit = calculate_completion_rate(data_for_comparison, group_by_col='UNITPJK', columns_to_consider=grade_cols_to_consider)
-                completion_by_unit = completion_by_unit[completion_by_unit['UNITPJK'] != 'Tanpa Unit PJK']
-                if not completion_by_unit.empty:
-                    completion_by_unit = completion_by_unit.sort_values(by='completion_rate', ascending=True)
-                    colors = ['#1f77b4'] * len(completion_by_unit) # Biru default
-                    highlight_color = '#ff7f0e' # Oranye
-                    if selected_unit != 'Semua Unit' and selected_unit in completion_by_unit['UNITPJK'].values:
-                        try:
-                            idx_series = completion_by_unit.index[completion_by_unit['UNITPJK'] == selected_unit]
-                            if not idx_series.empty:
-                                selected_index = completion_by_unit.index.get_loc(idx_series[0])
-                                if 0 <= selected_index < len(colors): colors[selected_index] = highlight_color
-                        except Exception: pass
+        if ks_proportions_match_in_this_kb:
+             print(f"      ==> Distribusi Proporsi JK & Jalur Masuk antar KS di KB {kb_id} terlihat seimbang.")
+        else:
+             print(f"      ==> Perhatian: Ada perbedaan proporsi JK/Jalur pada {count_significant_diff} KS di KB {kb_id}.")
 
-                    fig_unit_comparison = px.bar(
-                        completion_by_unit, y='UNITPJK', x='completion_rate', orientation='h',
-                        labels={'completion_rate': 'Penyelesaian (%)'},
-                        text='completion_rate', height=max(400, len(completion_by_unit) * 25) # Tinggi dinamis
-                    )
-                    fig_unit_comparison.update_traces(marker_color=colors, texttemplate='%{text:.1f}%', textposition='outside')
-                    fig_unit_comparison.update_layout(yaxis={'categoryorder':'total ascending', 'type': 'category', 'title': None}, xaxis_title="Penyelesaian (%)", showlegend=False, margin=dict(l=10, r=10, t=5, b=10)) # Margin atas lebih kecil
-                    st.plotly_chart(fig_unit_comparison, use_container_width=True)
-                    st.caption(f"Berdasarkan filter: Tahap '{selected_tahap}', Fakultas '{selected_fakultas}', Kategori '{', '.join(selected_kategori)}'")
-                else: st.info("Tdk cukup data unit.")
-             else: st.info("Data Unit PJK tdk tersedia.")
+        # Ukuran dan Standar Deviasi KS di dalam KB ini
+        if ks_sizes_in_kb:
+            ks_sizes_series = pd.Series(ks_sizes_in_kb)
+            std_dev_ks = ks_sizes_series.std()
+            all_ks_std_devs.append(std_dev_ks) # Kumpulkan untuk rata-rata nanti
+            print(f"      Ukuran KS di KB {kb_id}: Min={ks_sizes_series.min()}, Max={ks_sizes_series.max()}, Mean={ks_sizes_series.mean():.2f}, StdDev={std_dev_ks:.2f}")
+            if std_dev_ks < 1.0: # KS biasanya lebih kecil, toleransi std dev lebih ketat
+                 print("      ==> Variasi ukuran antar KS di KB ini sangat kecil.")
+            else:
+                 print("      ==> Terdapat variasi ukuran antar KS di KB ini.")
+        else:
+            print("      Tidak ada Kelompok Sedang yang terisi di KB ini.")
 
-else:
-    st.error("Gagal memuat data awal. Dashboard tidak dapat ditampilkan.")
+
+    print("\n--- Verifikasi Proporsi & Ukuran Selesai ---")
+    if overall_ks_proportions_ok:
+        print("Secara keseluruhan, proporsi di KS dalam masing-masing KB tampak terjaga.")
+    else:
+        print("Perhatian: Terdapat KS dengan proporsi JK/Jalur yang berbeda signifikan dari target KB-nya.")
+
+    # Rata-rata std dev ukuran KS di semua KB
+    if all_ks_std_devs:
+        avg_ks_std_dev = sum(all_ks_std_devs) / len(all_ks_std_devs)
+        print(f"\nRata-rata Standar Deviasi ukuran Kelompok Sedang (di seluruh KB): {avg_ks_std_dev:.2f}")
+
+
+# --- Alur Eksekusi Utama ---
+if __name__ == "__main__":
+    # 1. Buat Data Dummy
+    df_mahasiswa = buat_data_dummy(JUMLAH_DATA_DUMMY)
+
+    # 2. Lakukan Pembagian Kelompok (Gunakan fungsi baru)
+    df_hasil_kelompok = bagi_kelompok_rata(df_mahasiswa, JUMLAH_KB, JUMLAH_KS) # Panggil fungsi yg dimodifikasi
+
+    # 3. Cek Proporsi dan Standar Deviasi Ukuran (Gunakan fungsi baru)
+    cek_proporsi_dan_std(df_mahasiswa, df_hasil_kelompok, JUMLAH_KB, JUMLAH_KS) # Panggil fungsi cek yg dimodifikasi
+
+    # 4. Siapkan Output Akhir (Sama seperti sebelumnya, sudah lengkap)
+    kolom_output = [
+        KOLOM_NIM, KOLOM_NAMA, KOLOM_FAKULTAS, KOLOM_JK, KOLOM_JALUR,
+        KOLOM_KB_OUTPUT, KOLOM_KS_OUTPUT
+    ]
+    df_output_final = df_hasil_kelompok[kolom_output]
+    df_output_final = df_output_final.sort_values(by=[KOLOM_KB_OUTPUT, KOLOM_KS_OUTPUT, KOLOM_NIM])
+
+    # 5. Simpan Hasil Akhir ke Excel
+    try:
+        print(f"\nMenyimpan hasil akhir ke {NAMA_FILE_OUTPUT}...")
+        df_output_final.to_excel(NAMA_FILE_OUTPUT, index=False)
+        print("Proses selesai! Hasil pembagian kelompok final telah disimpan.")
+    except Exception as e:
+        print(f"Error saat menyimpan file hasil akhir: {e}")
